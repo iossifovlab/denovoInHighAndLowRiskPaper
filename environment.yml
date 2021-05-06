@@ -1,0 +1,6 @@
+name: bala
+dependencies:
+  - python=2.7.14
+  - ipython=5.8.0
+  - scipy
+  - matplotlib
