@@ -4,7 +4,7 @@ import sys,glob,os
 from pylab import *
 from collections import defaultdict
 
-resDir = "../input"
+resDir = "./input"
 if 'DI_DATA_RES_DIR' in os.environ:
     resDir = os.environ['DI_DATA_RES_DIR']
 
@@ -84,6 +84,8 @@ except NameError:
             dn.pids = r['personIds'].split(",")
             assert set(dn.pids).issubset(personSet)
             if len(dn.pids)==1: dn.pid ,= dn.pids
+
+            dn.coll ,= set([persons[pid].coll for pid in dn.pids])
 
             dn.gns = set([])
             if r['genes']:
