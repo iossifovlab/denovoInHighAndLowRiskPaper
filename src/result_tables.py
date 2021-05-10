@@ -15,13 +15,6 @@ def count(chldrnIds,varFilterF):
     return PSD 
 
 
-def pV2Str(pv):
-    if pv < 0.0001:
-        return "%.2e" % (pv)
-    else:
-        return "%.4f" % (pv)
-
-
 def compareN2(cF1,cB1,cF2,cB2,nullI=0,bootstrapI=0,norStandard=None):
     assert cF1.keys() == cF2.keys()
     assert cB1.keys() == cB2.keys()
@@ -269,8 +262,8 @@ def create_merged_intron_result():
         'all NDD LGD',
     ]
     for setK in targetDef:
-        cn = 'number_of_' + setK.replace(' ','_') + "_variants"
-        genes = set(DT['gene'][DT[cn]>0])
+        cn = 'number_of_' + CN(setK) + "_variants"
+        genes = set(GENE['gene'][GENE[cn]>0])
 
         IIND = cntHelp(lambda e: isTargetIntercodingIndel(e,genes))
 
@@ -458,16 +451,16 @@ def create_intronic_result():
 
     for stK in mtSets:
         if stK == 'all genes':
-            iis = ones(len(DT),dtype=bool)
+            iis = ones(len(GENE),dtype=bool)
         else:
-            cn = 'number_of_' + stK.replace(' ','_') + "_variants"
-            iis = DT[cn] == 1
+            cn = 'number_of_' + CN(setK) + "_variants"
+            iis = GENE[cn] == 1
         
         for eT,varTs in zip(["indel","sub"],[set(["del","ins"]),set(["sub"])]):
 
             for effT in ["inter-coding_intronic","peripheral"]:
                 
-                gnsS = set(DT['gene'][iis])
+                gnsS = set(GENE['gene'][iis])
 
                 cs = [stK,eT,effT,iis.sum()] 
                 def eventFF(e):
@@ -489,11 +482,11 @@ def create_intronic_result():
     IRTF.close()
 
 if __name__ == "__main__":
-    # tb = 'all'
-    # tb = 'merged_intron'
     tb = 'merged_simplex_multiplex'
     if len(sys.argv) > 1:
         tb = sys.argv[1]
+
+    EVS = loadEVS(['CNV_denovo', 'SSC_small_denovo', 'AGRE_small_denovo'])
 
     if tb == 'all':
         create_small_scale_result()

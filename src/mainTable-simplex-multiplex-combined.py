@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 from pylab import *
-
-   
+from diData import pV2Str
 
 IFN = "merged_simplex_multiplex_results.txt"
 if len(sys.argv) > 1:
@@ -25,18 +24,6 @@ RSD = {}
 for R in RS:
     k = (R['foreground group'],R['background group'])
     RSD[k] = R
-
-def pV2Str(pv):
-    if pv < 0.0001:
-        return "%.0e" % (pv)
-    elif pv < 0.001:
-        return "%.5f" % (pv)
-    elif pv < 0.01:
-        return "%.4f" % (pv)
-    elif pv < 0.1:
-        return "%.3f" % (pv)
-    else:
-        return "%.2f" % (pv)
 
 hcs = ['group','events number', 'expected events number', 'delta', 'pval', 'AD']
 print "\t".join(hcs)

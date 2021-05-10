@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 from pylab import *
-
-   
+from pV2Str import pV2Str
 
 IFN = "CNV_result_table.txt"
 if len(sys.argv) > 1:
@@ -25,18 +24,6 @@ RSD = {}
 for R in RS:
     k = (R['section'],R['effect'],R['variant'],R['group'],R['backgroundGroup'])
     RSD[k] = R
-
-def pV2Str(pv):
-    if pv < 0.0001:
-        return "%.0e" % (pv)
-    elif pv < 0.001:
-        return "%.5f" % (pv)
-    elif pv < 0.01:
-        return "%.4f" % (pv)
-    elif pv < 0.1:
-        return "%.3f" % (pv)
-    else:
-        return "%.2f" % (pv)
 
 hcs1 = ['','SSC unaffected','','SSC affected']
 hcs2 = ['effect', 'CNV number', 'CNV rate', 'CNV number', 'CNV rate', 'expected CNVs number', 'delta', 'pval', 'AD', 'PC']

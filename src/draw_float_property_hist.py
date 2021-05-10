@@ -7,24 +7,11 @@ from scipy.stats import rankdata
 from diData import *
 
 outDir = "propRes"
-
 if len(sys.argv)>1:
     outDir = sys.argv[1]
 
-gnsS = set(DT['gene'][DT['number_of_all_NDD_LGD_variants']>0])
-
-def pV2Str(pv):
-    if pv < 0.0001:
-        return "%.0e" % (pv)
-    elif pv < 0.001:
-        return "%.5f" % (pv)
-    elif pv < 0.01:
-        return "%.4f" % (pv)
-    elif pv < 0.1:
-        return "%.3f" % (pv)
-    else:
-        return "%.2f" % (pv)
-
+gnsS = set(GENE['gene'][GENE[CN('number of all NDD LGD variants')]>0])
+EVS = loadEVS(['CNV_denovo'])
 
 startFigureNumber = 9
 propDefs = [
@@ -76,11 +63,6 @@ def clS(cl):
 
     return "".join([x[0] for x in cl])
 
-
-
-TF = open(outDir + "/property_table.txt","w")
-TF.write("\t".join(['property','Supp. Fig. N.'] + ["-".join(map(clS,clp)) for clp in clps]) + "\n")
-
 def getEvents(vrTps,skipShared=True,quadsOnly=True,skipX=True):
     for e in EVS:
         if e.coll != "SSC"                                : continue
@@ -91,14 +73,9 @@ def getEvents(vrTps,skipShared=True,quadsOnly=True,skipX=True):
         if skipShared and len(e.pids)>1                   : continue
         yield e
 
-
-def getPropColumnName(propN):
-    return propN.replace(" ","_").replace("'","").replace("-","").replace(",","")
-
-
 def grankByProp(evs,propN,doAbs,bestRank):
     assert bestRank in ['min', 'max']
-    vs = array([e.atts[getPropColumnName(propN)] for e in evs])
+    vs = array([e.atts[CN(propN)] for e in evs])
 
     msngInds = isnan(vs)
 
@@ -122,13 +99,16 @@ def minRanks(evs):
                 if propN != 'minimum property rank' and propN != '__SECTION__']).T
     return allRnks.min(axis=1)
 
+TF = open(outDir + "/property_table.txt","w")
+TF.write("\t".join(['property','Supp. Fig. N.'] + ["-".join(map(clS,clp)) for clp in clps]) + "\n")
+
 propI = 0
 for propN,doAbs,legendLeft,bestRank in propDefs:
     if propN == '__SECTION__':
         TF.write(doAbs + "\n")
         continue
 
-    propCN = getPropColumnName(propN) 
+    propCN = CN(propN) 
 
     vsByClass = {}
     mns = []

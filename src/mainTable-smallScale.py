@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 from pylab import *
-
-   
+from diData import pV2Str
 
 IFN = "small_scale_result_table.txt"
 if len(sys.argv) > 1:
@@ -25,18 +24,6 @@ RSD = {}
 for R in RS:
     k = (R['group'],R['backgroundGroup'],R['effect'])
     RSD[k] = R
-
-def pV2Str(pv):
-    if pv < 0.0001:
-        return "%.0e" % (pv)
-    elif pv < 0.001:
-        return "%.5f" % (pv)
-    elif pv < 0.01:
-        return "%.4f" % (pv)
-    elif pv < 0.1:
-        return "%.3f" % (pv)
-    else:
-        return "%.2f" % (pv)
 
 hcs1 = ['','SSC unaffected','','affected']
 hcs2 = ['group','synonymous number', 'LGD number', 'synonymous number', 'LGD number', 'expected LGD number', 'delta', 'pval', 'AD', 'PC']

@@ -8,27 +8,14 @@ resDir = "./input"
 if 'DI_DATA_RES_DIR' in os.environ:
     resDir = os.environ['DI_DATA_RES_DIR']
 
-eventFiles = glob.glob('%s/*_denovo_table.txt' % (resDir))
-if 'DI_DATA_EVENT_FILES' in os.environ:
-    eventFiles = os.environ['DI_DATA_EVENT_FILES'].split(":")
-
-print "resDir:", resDir
-print "eventFiles:", eventFiles
-
-try:
-    DT
-except NameError:
-    DT = genfromtxt(resDir + "/gene_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
+GENE = genfromtxt(resDir + "/gene_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 
 class Child:
     pass
 class Family:
     pass
 
-try:
-    CHILDREN
-except NameError:
-    CHILDREN = genfromtxt(resDir + "/children_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
+CHILDREN = genfromtxt(resDir + "/children_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 
 persons = defaultdict(int)
 outlierPersons = defaultdict(int)
@@ -65,15 +52,14 @@ for fd in families.values():
 class Denovo:
     pass
 
-try:
-    EVS
-except NameError:
+def loadEVS(eventSets):
     personSet = set(persons)
     EVS = [] 
-    for fffnnn in eventFiles:
-        print >>sys.stderr, "loading", fffnnn, "..."
+    for eventSet in eventSets:
+        fn = resDir + "/" + eventSet + "_table.txt"  
+        print >>sys.stderr, "loading", fn, "..."
         try:
-            EVD = genfromtxt(fffnnn, delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)    
+            EVD = genfromtxt(fn, delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)    
         except Exception:
             print >>sys.stderr, "FAILED TO LOAD", fffnnn
             continue
@@ -109,7 +95,10 @@ except NameError:
             dn.atts = r
             
             EVS.append(dn)
+    return EVS
+
+def CN(column):
+    return column.replace(" ","_").replace("'","").replace("-","").replace(",","")
 
 if __name__ == "__main__":
     print 'hi'
-
