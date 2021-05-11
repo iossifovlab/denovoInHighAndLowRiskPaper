@@ -84,6 +84,7 @@ ylabel('power')
 legend([sal,ssl,aal],['SSC affected','SSC unaffected','AGRE affected'])
 gcf().set_size_inches(7,3)
 tight_layout()
-gcf().savefig("powerCNV.png")
-
-# show()
+if len(sys.argv) > 1:
+    gcf().savefig(sys.argv[1])
+else:
+    show()

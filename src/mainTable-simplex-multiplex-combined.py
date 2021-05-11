@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from pylab import *
-from diData import pV2Str
+from pV2Str import pV2Str
 
 IFN = "merged_simplex_multiplex_results.txt"
 if len(sys.argv) > 1:

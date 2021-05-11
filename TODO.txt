@@ -1,3 +1,5 @@
 * Replace the CNV_raw_table.txt in the Supplementary Files with the version in the input directory.
 
 * Replace the Supplementary Figure 1 with the one generated here.
+
+* Updated the parameters in the figISBSignalPower.py to match the latest samples.

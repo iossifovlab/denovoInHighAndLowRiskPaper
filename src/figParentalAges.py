@@ -60,5 +60,7 @@ for par,GS in zip(['father','mother'],[GRPDA,GRPMA]):
     title(par + "'s mean age at birth")
 gcf().set_size_inches(8,6)
 tight_layout()
-gcf().savefig("figParentalAges.png")
-# show()
+if len(sys.argv) > 1:
+    gcf().savefig(sys.argv[1])
+else:
+    show()

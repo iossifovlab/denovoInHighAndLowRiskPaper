@@ -14,7 +14,6 @@ def count(chldrnIds,varFilterF):
                 PSD[pid] += 1
     return PSD 
 
-
 def compareN2(cF1,cB1,cF2,cB2,nullI=0,bootstrapI=0,norStandard=None):
     assert cF1.keys() == cF2.keys()
     assert cB1.keys() == cB2.keys()
@@ -177,7 +176,6 @@ def empStats(sReal, sBckg, a):
 
     return es
 
-
 def create_small_scale_result():
     CGG = [
         ["SSC unaffected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'sib'}], 
@@ -206,7 +204,7 @@ def create_small_scale_result():
     def sm(g,e):
         return sum(CNTS[g,e].values())
 
-    SSTF = open('small_scale_result_table.txt', 'w')
+    SSTF = open(outDir + '/small_scale_result_table.txt', 'w')
     ohcs = ['group','backgroundGroup', 'effect']
     ohcs += "sReal.U sReal.Nu sReal.Xu sReal.A sReal.Na sReal.Xa sReal.RaR sReal.ENa sReal.delta sReal.AD bcAD.left95 bcAD.right95 esAD.pvOne esAD.z esAD.pvOneAn sReal.IR bcIR.left95 bcIR.right95".split()
 
@@ -252,7 +250,7 @@ def create_merged_intron_result():
     ICNV = cntHelp(isIntercodingCNV)
     GIND = cntHelp(isIntergenicIndel)
 
-    MIF = open('merged_intron_results.txt', 'w')
+    MIF = open(outDir + '/merged_intron_results.txt', 'w')
     ohcs = "genes geneNumber B EB delta AD AD.left AD.right AD.pval AD.z AD.pvOneAn".split()
     print "\t".join(ohcs)
     MIF.write("\t".join(ohcs) + "\n")
@@ -314,7 +312,7 @@ def create_merged_smimplex_vs_multiplex_result():
                     {pid:(LGD[pid],SYN[pid]) for pid in grpChIds}
                 ) 
 
-    MSMF = open('merged_simplex_multiplex_results.txt', 'w')
+    MSMF = open(outDir + '/merged_simplex_multiplex_results.txt', 'w')
 
     ohcs = ["foreground group", "background group"]
     ohcs += "B EB delta AD AD.left AD.right AD.pval AD.z AD.pvOneAn".split()
@@ -344,7 +342,7 @@ def create_CNV_result():
         ["AGRE affected", {pd.pId for pd in persons.values() if pd.coll == 'AGRE' and pd.role == 'prb'}]
     ]
 
-    CRTF = open('CNV_result_table.txt', 'w')
+    CRTF = open(outDir + '/CNV_result_table.txt', 'w')
 
     for grpName,grpChIds in CGG:
         print grpName, len(grpChIds)
@@ -437,7 +435,7 @@ def create_intronic_result():
         'all NDD synonymous',
     ]
 
-    IRTF = open('intronic_result_table.txt', 'w')
+    IRTF = open(outDir + '/intronic_result_table.txt', 'w')
 
     hcs = "set eventType intronType setGeneNumber".split(" ")
     hcs += "sReal.U sReal.Nu sReal.Xu sReal.A sReal.Na sReal.Xa sReal.RaR sReal.ENa sReal.delta sReal.AD bcAD.left95 bcAD.right95 esAD.pvOne esAD.z esAD.pvOneAn sReal.IR bcIR.left95 bcIR.right95".split()
@@ -453,7 +451,7 @@ def create_intronic_result():
         if stK == 'all genes':
             iis = ones(len(GENE),dtype=bool)
         else:
-            cn = 'number_of_' + CN(setK) + "_variants"
+            cn = 'number_of_' + CN(stK) + "_variants"
             iis = GENE[cn] == 1
         
         for eT,varTs in zip(["indel","sub"],[set(["del","ins"]),set(["sub"])]):
@@ -482,10 +480,12 @@ def create_intronic_result():
     IRTF.close()
 
 if __name__ == "__main__":
-    tb = 'merged_simplex_multiplex'
-    if len(sys.argv) > 1:
-        tb = sys.argv[1]
+    tb = 'all' if len(sys.argv) < 2 else sys.argv[1]
+    outDir = '.' if len(sys.argv) < 3 else sys.argv[2]
+    seedV = None if len(sys.argv) < 4 else int(sys.argv[3])
 
+    if seedV: seed(seedV)
+        
     EVS = loadEVS(['CNV_denovo', 'SSC_small_denovo', 'AGRE_small_denovo'])
 
     if tb == 'all':

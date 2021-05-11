@@ -5,13 +5,14 @@ from pylab import *
 from scipy.stats import ttest_ind,ks_2samp,ranksums,chi2_contingency,fisher_exact,mannwhitneyu
 from scipy.stats import rankdata
 from diData import *
+from pV2Str import pV2Str
 
 outDir = "propRes"
 if len(sys.argv)>1:
     outDir = sys.argv[1]
 
 gnsS = set(GENE['gene'][GENE[CN('number of all NDD LGD variants')]>0])
-EVS = loadEVS(['CNV_denovo'])
+EVS = loadEVS(['SSC_small_denovo'])
 
 startFigureNumber = 9
 propDefs = [

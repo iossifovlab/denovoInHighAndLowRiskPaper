@@ -21,31 +21,6 @@ WBI = array([pd.dnaSource == 'WB' for pd in CH])
 
 OKI = array([pd.outlier != 1 for pd in CH])
 
-'''
-CH = genfromtxt("children_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
-
-xs = CH['nDNSnvs']/CH['power']
-ys = CH['meanDNSnvsAltAlleleRatio']
-
-SWI = CH['collection']=='SSC'
-AWI = logical_and(CH['collection']=='AGRE',CH['dnaSource']=='WB')
-ALI = logical_and(CH['collection']=='AGRE',CH['dnaSource']=='LCL')
-
-WBI = CH['dnaSource']=='WB'
-# NOW OKI = CH['biVariantNormConf'] > outlierConf
-OKI = CH[CN('cell line drift outlier')]
-'''
-
-cs = array(['g']*NCH)
-cs[AWI] = 'r'
-cs[ALI] = 'b'
-
-
-
-
-
-
-
 def xTrns(x):
     x = array(x)
     # return x
@@ -66,7 +41,6 @@ ax_main = subplot(gs[1:GSS, :(GSS-1)])
 outlierConf = 0.001
 
 # step 1. fit the 2d normal distribution to the WB samples
-xxxxs = array([pd.atts[CN('number of dn snvs')] for pd in CH])
 xswb = xs[WBI]
 yswb = ys[WBI]
 XWB = vstack([xswb,yswb]).T
@@ -85,14 +59,12 @@ assert ( OKI == (twodnorm.assignConf(mns,cvM,vstack([xs,ys]).T) > outlierConf) )
 ##########################
 ##########################
 
-
-
-# ss = 20*((cfs>outlierConf).astype(int)) + 1
-
-# NOW ss = 5*ones(len(cfs))
 ss = 5*ones(NCH)
-ss[OKI] = 20
+# ss[OKI] = 20
 
+cs = array(['g']*NCH)
+cs[AWI] = 'r'
+cs[ALI] = 'b'
 
 scatter(xTrns(xs),ys,c=cs,s=ss)
 xtcks = [0,50,100,150,200,500,2000]
@@ -136,13 +108,14 @@ gcf().set_size_inches(8,8)
 tight_layout()
 
 bp = ax_yDist.get_position().get_points()
-print "y", bp
 bp[0,0] = 0.75
 ax_yDist.set_position(Bbox(bp))
 
 bp = ax_xDist.get_position().get_points()
-print "x", bp
 bp[0,1] = 0.75
 ax_xDist.set_position(Bbox(bp))
 
-gcf().savefig("children_scatter.png")
+if len(sys.argv) > 1:
+    gcf().savefig(sys.argv[1])
+else:
+    show()

@@ -35,5 +35,7 @@ ylabel('percent contributory')
 xlabel('min CNV gene number\n(number of CNVs in affected and unaffected children)')
 gcf().set_size_inches(6,4)
 tight_layout()
-gcf().savefig("IRbyCNVGeneN.png")
-# show()
+if len(sys.argv) > 1:
+    gcf().savefig(sys.argv[1])
+else:
+    show()

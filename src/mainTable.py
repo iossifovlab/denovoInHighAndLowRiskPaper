@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from pylab import *
+from pV2Str import pV2Str
 
 mtSets = [
     ('Y',"all genes"),

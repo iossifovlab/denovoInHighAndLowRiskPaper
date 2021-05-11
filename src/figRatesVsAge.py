@@ -75,5 +75,7 @@ xlabel("mother's age at birth")
 
 gcf().set_size_inches(6.5,6.5)
 tight_layout()
-gcf().savefig("figRatesVsAge.png")
-# show()
+if len(sys.argv) > 1:
+    gcf().savefig(sys.argv[1])
+else:
+    show()

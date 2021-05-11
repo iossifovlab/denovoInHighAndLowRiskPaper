@@ -61,9 +61,9 @@ UCSCLink	collection	familyId	in affected status	personIds	location	variant	size	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A80527601-80555800","LINK")	SSC	11479	affected	11479.p1	chr3:80527601-80555800	deletion	28200	Sanders 2015	intergenic	0	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A105250701-105329648","LINK")	SSC	11227	affected	11227.p1	chr3:105250701-105329648	deletion	78948	Sanders 2015	intergenic	0	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A124759554-126072144","LINK")	AGRE	AU0911202_AU0911201	affected	AU0911302	chr3:124759554-126072144	duplication	1312591	Leppa 2016	coding	10	ALG1L,HEG1,ITGB5,MUC13,OSBPL11,ROPN1B,SLC12A8,SLC41A3,SNX4,ZNF148
+=HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A126692258-126694457","LINK")	AGRE	AU1953202_AU1953201	affected	AU1953302	chr3:126692258-126694457	duplication	2200		intergenic	0	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A129465801-129467800","LINK")	SSC	13095	unaffected	13095.s1	chr3:129465801-129467800	deletion	2000		coding	1	IFT122
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A135586728-135768700","LINK")	SSC	13348	unaffected	13348.s1	chr3:135586728-135768700	duplication	181973	Sanders 2015	intergenic	0	
-=HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A136116201-136120700","LINK")	SSC	13746	affected	13746.p1	chr3:136116201-136120700	duplication	4500		inter-coding_intronic	1	PPP2R3A
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A140901248-140907406","LINK")	SSC	11611	affected	11611.p1	chr3:140901248-140907406	deletion	6159		intergenic	0	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A164452101-164471813","LINK")	SSC	11450	affected	11450.p1	chr3:164452101-164471813	deletion	19713	Sanders 2015	intergenic	0	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr3%3A186782912-186788211","LINK")	AGRE	AU1365202_AU1365201	affected	AU1365301	chr3:186782912-186788211	deletion	5300		coding	1	EIF4A2
@@ -170,7 +170,9 @@ UCSCLink	collection	familyId	in affected status	personIds	location	variant	size	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr8%3A122367662-122396983","LINK")	AGRE	AU2063202_AU2063201	affected	AU2063307	chr8:122367662-122396983	deletion	29322		intergenic	0	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr8%3A129992401-129996300","LINK")	SSC	14558	affected	14558.p1	chr8:129992401-129996300	deletion	3900		peripheral	1	FAM49B
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr8%3A135669041-135912099","LINK")	SSC	12871	unaffected	12871.s1	chr8:135669041-135912099	duplication	243059	Sanders 2015	intergenic	0	
+=HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr8%3A142739201-142943411","LINK")	SSC	14185	unaffected	14185.s1	chr8:142739201-142943411	duplication	204211	Sanders 2015	coding	9	CYP11B1,CYP11B2,GML,LY6D,LYNX1,LYNX1-SLURP2,LYPD2,SLURP1,SLURP2
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr8%3A144403601-144417100","LINK")	SSC	11258	affected	11258.p1	chr8:144403601-144417100	duplication	13500		coding	2	CPSF1,SLC39A4
+=HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr9%3A727020-1345486","LINK")	SSC	14505	unaffected	14505.s1	chr9:727020-1345486	duplication	618467	Sanders 2015	coding	4	DMRT1,DMRT2,DMRT3,KANK1
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr9%3A3208401-3212100","LINK")	SSC	11922	affected	11922.p1	chr9:3208401-3212100	deletion	3700		intergenic	0	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr9%3A13306701-13316760","LINK")	SSC	11348	affected	11348.p1	chr9:13306701-13316760	deletion	10060	Sanders 2015	intergenic	0	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr9%3A19116201-19152500","LINK")	SSC	14606	unaffected	14606.s1	chr9:19116201-19152500	duplication	36300		coding	1	PLIN2
@@ -307,6 +309,7 @@ UCSCLink	collection	familyId	in affected status	personIds	location	variant	size	
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr16%3A83127201-83203200","LINK")	SSC	14475	affected	14475.p1	chr16:83127201-83203200	deletion	76000	Sanders 2015	coding	1	CDH13
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr16%3A83921996-84092002","LINK")	AGRE	AU1072202_AU1072201	affected	AU1072303	chr16:83921996-84092002	deletion	170007		coding	4	MBTPS1,NECAB2,OSGIN1,SLC38A8
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr16%3A84203001-84205400","LINK")	SSC	12613	unaffected	12613.s1	chr16:84203001-84205400	deletion	2400		intergenic	0	
+=HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr16%3A84413362-84495119","LINK")	SSC	13874	unaffected	13874.s1	chr16:84413362-84495119	deletion	81758	Sanders 2015	coding	2	ATP2C2,MEAK7
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr16%3A89740401-89753952","LINK")	SSC	14412	unaffected	14412.s1	chr16:89740401-89753952	duplication	13552	Sanders 2015	coding	1	FANCA
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr17%3A1064004-1709900","LINK")	SSC	14226	affected	14226.p1	chr17:1064004-1709900	duplication	645897	Sanders 2015	coding	13	ABR,BHLHA9,CRK,INPP5K,MYO1C,PITPNA,PRPF8,RILP,SCARF1,SLC43A2,TLCD2,TRARG1,YWHAE
 =HYPERLINK("https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr17%3A1612601-1620251","LINK")	SSC	12243	affected	12243.p1	chr17:1612601-1620251	deletion	7651		coding	1	SLC43A2

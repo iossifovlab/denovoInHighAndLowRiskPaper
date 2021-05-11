@@ -26,9 +26,7 @@ for cnv in CNVR:
         flChldrnN[pid] += 1
         assert not cnv['in_summary']
     else:
-        print "BREH: unknown pid", pid
-        assert not cnv['in_summary']
-        continue
+        assert False
 
     ratioS = cnv['region_median_ratio_for_the_child']
     if ratioS != 'NA': 
@@ -65,6 +63,8 @@ for plrty in ['deletion','duplication']:
 
 gcf().set_size_inches(10,8)
 tight_layout()
-gcf().savefig("CNVsByFilter.png")
+if len(sys.argv) > 1:
+    gcf().savefig(sys.argv[1])
+else:
+    show()
 
-# show()

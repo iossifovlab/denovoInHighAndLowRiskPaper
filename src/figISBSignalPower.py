@@ -35,6 +35,7 @@ ylabel('power in %d quads' % (NS[0]))
 legend()
 gcf().set_size_inches(6,3)
 tight_layout()
-gcf().savefig("ISB-power.png")
-
-# show()
+if len(sys.argv) > 1:
+    gcf().savefig(sys.argv[1])
+else:
+    show()

@@ -34,4 +34,7 @@ yticks([])
 
 gcf().set_size_inches(5,5)
 tight_layout()
-gcf().savefig("powerSnv.png")
+if len(sys.argv) > 1:
+    gcf().savefig(sys.argv[1])
+else:
+    show()
