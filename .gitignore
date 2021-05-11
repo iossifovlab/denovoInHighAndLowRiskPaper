@@ -1,2 +1,2 @@
-log
-propRes
+res*
+**/*pyc

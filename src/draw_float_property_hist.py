@@ -7,7 +7,7 @@ from scipy.stats import rankdata
 from diData import *
 from pV2Str import pV2Str
 
-outDir = "propRes"
+outDir = "."
 if len(sys.argv)>1:
     outDir = sys.argv[1]
 
@@ -100,7 +100,7 @@ def minRanks(evs):
                 if propN != 'minimum property rank' and propN != '__SECTION__']).T
     return allRnks.min(axis=1)
 
-TF = open(outDir + "/property_table.txt","w")
+TF = open(outDir + "/SuppTable-8-propertyTable.txt","w")
 TF.write("\t".join(['property','Supp. Fig. N.'] + ["-".join(map(clS,clp)) for clp in clps]) + "\n")
 
 propI = 0
@@ -160,11 +160,11 @@ for propN,doAbs,legendLeft,bestRank in propDefs:
     if len(mxs) != 0:
         mx = max(mxs)
 
-    supFN = str(startFigureNumber + propI)
+    supFN = startFigureNumber + propI
     propI += 1
 
     clf()
-    tbCs = [propN,supFN]
+    tbCs = [propN,str(supFN)]
     for clpi,(cl1,cl2) in enumerate(clps):
         bns = 30
         subplot(2,2,clpi+1)
@@ -226,7 +226,7 @@ for propN,doAbs,legendLeft,bestRank in propDefs:
     
     gcf().set_size_inches(16,10)
     tight_layout()
-    gcf().savefig(outDir + "/hists-" + propCN + ".png")
+    gcf().savefig("%s/SuppFigure-%d-hists-%s.png" % (outDir,supFN,propCN))
 
     TF.write("\t".join(tbCs) + "\n") 
 TF.close()
