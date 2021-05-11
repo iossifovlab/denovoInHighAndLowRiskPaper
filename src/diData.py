@@ -8,6 +8,10 @@ resDir = "./input"
 if 'DI_DATA_RES_DIR' in os.environ:
     resDir = os.environ['DI_DATA_RES_DIR']
 
+
+def CN(column):
+    return column.replace(" ","_").replace("'","").replace("-","").replace(",","")
+
 GENE = genfromtxt(resDir + "/gene_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 
 class Child:
@@ -25,7 +29,7 @@ for R in CHILDREN:
     fId = str(R['familyId'])
     p = Child()
     p.fId = fId
-    p.pId,p.affectedStatus,p.gndr,p.coll,p.outlier,p.dnaSource = [R[a] for a in "personId,affected_status,sex,collection,cell_line_drift_outlier,dna_source".split(",")]
+    p.pId,p.affectedStatus,p.gndr,p.coll,p.outlier,p.dnaSource = [R[CN(a)] for a in "personId,affected status,sex,collection,cell line drift outlier,dna source".split(",")]
     p.role = afs2Role[p.affectedStatus]
     p.atts = R
 
@@ -61,7 +65,7 @@ def loadEVS(eventSets):
         try:
             EVD = genfromtxt(fn, delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)    
         except Exception:
-            print >>sys.stderr, "FAILED TO LOAD", fffnnn
+            print >>sys.stderr, "FAILED TO LOAD", fn
             continue
         for r in EVD:
             dn = Denovo()
@@ -96,9 +100,6 @@ def loadEVS(eventSets):
             
             EVS.append(dn)
     return EVS
-
-def CN(column):
-    return column.replace(" ","_").replace("'","").replace("-","").replace(",","")
 
 if __name__ == "__main__":
     print 'hi'

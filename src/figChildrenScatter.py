@@ -1,29 +1,49 @@
 #!/usr/bin/env python
 
 from pylab import *
-from twodnorm import *
-from params import *
 import matplotlib.gridspec as gridspec
 from matplotlib.transforms import Bbox
 from scipy import stats
+import twodnorm
+from diData import *
 
+CH = persons.values() + outlierPersons.values()
+NCH = len(CH)
+
+xs = array([pd.atts[CN('number of dn snvs')]/pd.atts[CN('power to detect dn snvs')] for pd in CH])
+ys = array([pd.atts[CN('mean dn snvs alt allele ratio')] for pd in CH])
+
+SWI = array([pd.coll == 'SSC' for pd in CH])
+AWI = array([pd.coll == 'AGRE' and pd.dnaSource == 'WB' for pd in CH])
+ALI = array([pd.coll == 'AGRE' and pd.dnaSource == 'LCL' for pd in CH])
+
+WBI = array([pd.dnaSource == 'WB' for pd in CH])
+
+OKI = array([pd.outlier != 1 for pd in CH])
+
+'''
 CH = genfromtxt("children_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 
 xs = CH['nDNSnvs']/CH['power']
 ys = CH['meanDNSnvsAltAlleleRatio']
 
-xswb = xs[CH['dnaSource']=='WB']
-yswb = ys[CH['dnaSource']=='WB']
+SWI = CH['collection']=='SSC'
+AWI = logical_and(CH['collection']=='AGRE',CH['dnaSource']=='WB')
+ALI = logical_and(CH['collection']=='AGRE',CH['dnaSource']=='LCL')
 
-XWB = vstack([xswb,yswb]).T
-mns = XWB.mean(axis=0)
-cvM = cov(XWB.T)
+WBI = CH['dnaSource']=='WB'
+# NOW OKI = CH['biVariantNormConf'] > outlierConf
+OKI = CH[CN('cell line drift outlier')]
+'''
 
-outlierConf = float(params['children.binormal.conf.cutoff'])
+cs = array(['g']*NCH)
+cs[AWI] = 'r'
+cs[ALI] = 'b'
 
-XALL = vstack([xs,ys]).T
-# cfs = assignConf(mns,cvM,XALL)
-cfs = CH['biVariantNormConf']
+
+
+
+
 
 
 def xTrns(x):
@@ -39,35 +59,44 @@ GSS = 5
 gs = gridspec.GridSpec(GSS, GSS)
 ax_main = subplot(gs[1:GSS, :(GSS-1)])
 
-cs = []
-for R in CH:
-    c = 'g'
-    if R['collection'] == 'AGRE':
-        if R['dnaSource'] == 'WB':
-            c = 'r'
-        else:
-            c = 'b'
-    cs.append(c)
-cs = array(cs)
-        
 
-# gca().add_patch(confEllipse(mns,cvM,0.05,ec='m',lw=1))
-# gca().add_patch(confEllipse(mns,cvM,0.01,ec='g',lw=1))
-gca().add_patch(confEllipse(mns,cvM,outlierConf,ec='k',lw=1))
+##        
+## draw the 2-d confidence 0.001 ellipse
+##
+outlierConf = 0.001
+
+# step 1. fit the 2d normal distribution to the WB samples
+xxxxs = array([pd.atts[CN('number of dn snvs')] for pd in CH])
+xswb = xs[WBI]
+yswb = ys[WBI]
+XWB = vstack([xswb,yswb]).T
+mns = XWB.mean(axis=0)
+cvM = cov(XWB.T)
+
+# step 2. plot the ellipse
+gca().add_patch(twodnorm.confEllipse(mns,cvM,outlierConf,ec='k',lw=1))
+
+# verity that the outlier samples are the ones with confidence level less than 0.001
+XALL = vstack([xs,ys]).T
+cfs = twodnorm.assignConf(mns,cvM,XALL)
+assert ( OKI == (twodnorm.assignConf(mns,cvM,vstack([xs,ys]).T) > outlierConf) ).all()
+
+##########################
+##########################
+##########################
+
+
 
 # ss = 20*((cfs>outlierConf).astype(int)) + 1
-ss = 5*ones(len(cfs))
 
-xxx = XALL[:,0]
-scatter(xTrns(xxx),XALL[:,1],c=cs,s=ss)
+# NOW ss = 5*ones(len(cfs))
+ss = 5*ones(NCH)
+ss[OKI] = 20
+
+
+scatter(xTrns(xs),ys,c=cs,s=ss)
 xtcks = [0,50,100,150,200,500,2000]
 xticks(xTrns(xtcks),map(str,xtcks))
-
-SWI = CH['collection']=='SSC'
-AWI = logical_and(CH['collection']=='AGRE',CH['dnaSource']=='WB')
-ALI = logical_and(CH['collection']=='AGRE',CH['dnaSource']=='LCL')
-
-OKI = CH['biVariantNormConf'] > outlierConf
 
 def pltD(a,c,f,t,onY=False,):
     density = stats.kde.gaussian_kde(a)
@@ -86,7 +115,7 @@ gca().spines['top'].set_visible(False)
 
 
 ax_xDist = subplot(gs[0, :(GSS-1)],sharex=ax_main)
-xxxx = xTrns(xxx)
+xxxx = xTrns(xs)
 M = xTrns(4000)
 pltD(xxxx[SWI],'g',0,M)
 pltD(xxxx[AWI],'r',0,M)
@@ -98,10 +127,9 @@ legend([  'SSC WB %d/%d'  % (logical_and(SWI,OKI).sum(),  SWI.sum()),
          'AGRE LCL %d/%d' % (logical_and(ALI,OKI).sum(),  ALI.sum())])
 
 ax_yDist = subplot(gs[1:GSS, GSS-1],sharey=ax_main)
-yyy = XALL[:,1]
-pltD(yyy[SWI],'g',0.27,0.55,True)
-pltD(yyy[AWI],'r',0.27,0.55,True)
-pltD(yyy[ALI],'b',0.27,0.55,True)
+pltD(ys[SWI],'g',0.27,0.55,True)
+pltD(ys[AWI],'r',0.27,0.55,True)
+pltD(ys[ALI],'b',0.27,0.55,True)
 axis('off')
 
 gcf().set_size_inches(8,8)
