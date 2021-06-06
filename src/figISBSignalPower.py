@@ -3,12 +3,41 @@
 from pylab import *
 from scipy.stats import poisson,binom_test
 
-I = 1000
+outFigName = None if len(sys.argv) < 2 else sys.argv[1]
+seedV = None if len(sys.argv) < 3 else int(sys.argv[2])
+IFN = "intronic_result_table.txt" if len(sys.argv) < 4 else int(sys.argv[3])
 
-BRS = [37529/1865.,3002/1865.]
+if seedV: seed(seedV)
+
+RS = genfromtxt(IFN, delimiter='\t',dtype=None,names=True, case_sensitive=True)
+RSD = {}
+for R in RS:
+    k = (R['set'],R['eventType'],R['intronType'])
+    RSD[k] = R
+
+allR = RSD["all genes",'sub','inter-coding_intronic']
+autR = RSD["autism LGD",'sub','inter-coding_intronic']
+
+nIntronSubsUnaffectedAll = allR['sRealNu'] 
+nIntronSubsUnaffectedCandidateGenes = autR['sRealNu'] 
+nUnaffected = allR['sRealU'] # all reacords have the same number of affected and unaffected children 
+nAffected  = allR['sRealA'] 
+
+# background rates
+BRS = [nIntronSubsUnaffectedAll/float(nUnaffected),
+       nIntronSubsUnaffectedCandidateGenes/float(nUnaffected)]
+
+# effects sizes
 EFS = [0.05, 0.1, 0.2, 0.3, 0.4]
-NS = [1865]
+
+# significances
 AS = [0.05]
+
+# sample sizes
+NS = [nAffected]
+
+
+I = 1000
 
 ALT = ['-', '.-', '*-']
 
@@ -35,7 +64,7 @@ ylabel('power in %d quads' % (NS[0]))
 legend()
 gcf().set_size_inches(6,3)
 tight_layout()
-if len(sys.argv) > 1:
-    gcf().savefig(sys.argv[1])
+if outFigName:
+    gcf().savefig(outFigName)
 else:
     show()

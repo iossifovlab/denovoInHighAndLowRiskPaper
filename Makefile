@@ -47,13 +47,13 @@ SuppFigure-4-powerCNV.png:
 	$D/figCNVPower.py $@
 
 SuppFigure-5-PCbyCNVGeneN.png:
-	$D/figPCbyCNVgenes.py $@
+	$D/figPCbyCNVgenes.py $@ 1
 
 SuppFigure-6-ratesVsAge.png:
 	$D/figRatesVsAge.py $@
 
 SuppFigure-7-ISB-power.png:
-	$D/figISBSignalPower.py $@
+	$D/figISBSignalPower.py $@ 1
 
 SuppTable-8-propertyTable.txt:
 	$D/draw_float_property_hist.py

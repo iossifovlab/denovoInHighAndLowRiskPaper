@@ -452,7 +452,7 @@ def create_intronic_result():
             iis = ones(len(GENE),dtype=bool)
         else:
             cn = 'number_of_' + CN(stK) + "_variants"
-            iis = GENE[cn] == 1
+            iis = GENE[cn] > 0
         
         for eT,varTs in zip(["indel","sub"],[set(["del","ins"]),set(["sub"])]):
 

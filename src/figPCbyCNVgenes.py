@@ -3,6 +3,11 @@
 from diData import *
 from result_tables import compareN, empStats
 
+outFigName = None if len(sys.argv) < 2 else sys.argv[1]
+seedV = None if len(sys.argv) < 3 else int(sys.argv[2])
+
+if seedV: seed(seedV)
+
 prbs = {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'prb'}
 sibs = {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'sib'}
 
@@ -35,7 +40,7 @@ ylabel('percent contributory')
 xlabel('min CNV gene number\n(number of CNVs in affected and unaffected children)')
 gcf().set_size_inches(6,4)
 tight_layout()
-if len(sys.argv) > 1:
-    gcf().savefig(sys.argv[1])
+if outFigName:
+    gcf().savefig(outFigName)
 else:
     show()
