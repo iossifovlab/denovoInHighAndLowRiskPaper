@@ -356,7 +356,7 @@ def create_CNV_result():
         ['all', lambda e: okCNV(e)],
         ['coding', lambda e: okCNV(e) and e.genomicRegion == 'coding'],
         ['intergenic', lambda e: okCNV(e) and e.genomicRegion == 'intergenic'],
-        ['genic other', lambda e: okCNV(e) and e.genomicRegion != 'coding' and e.genomicRegion != 'intergenic']
+        ['genic noncoding', lambda e: okCNV(e) and e.genomicRegion != 'coding' and e.genomicRegion != 'intergenic']
     ]
 
     def oneGeneCNV(e):

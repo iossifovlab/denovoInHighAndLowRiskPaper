@@ -30,7 +30,7 @@ hcs2 = ['effect', 'group','CNV number', 'CNV rate', 'CNV number', 'CNV rate', 'e
 print "\t".join(hcs1)
 print "\t".join(hcs2)
 # for vTp in ['cnvs','deletion','duplication']:
-for effT in ['all','coding','intergenic','genic other']:
+for effT in ['all','coding','intergenic','genic noncoding']:
     for grp in ['SSC affected', 'AGRE affected']:
         R = RSD['ALL EVENTS',effT,'cnvs',grp,'SSC unaffected']
         cs = [effT,grp]
