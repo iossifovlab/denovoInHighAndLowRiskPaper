@@ -1,0 +1,10 @@
+		SSC unaffected		affected
+effect	group	CNV number	CNV rate	CNV number	CNV rate	expected CNVs number	delta	pval	AD	PC
+all	SSC affected	86	0.046	157	0.084	85.8	71.2	2e-06	3.81% (2.16-5.47)	45.4% (29.2-57.9)
+all	AGRE affected	86	0.046	56	0.051	50.8	5.2	0.29	0.47% (-1.15-2.13)	9.3% (-29.3-34.4)
+coding	SSC affected	44	0.023	106	0.057	43.9	62.1	4e-07	3.32% (2.04-4.63)	58.6% (40.9-71.0)
+coding	AGRE affected	44	0.023	34	0.031	26.0	8.0	0.12	0.72% (-0.52-2.06)	23.6% (-21.3-52.1)
+intergenic	SSC affected	26	0.014	34	0.018	25.9	8.1	0.15	0.43% (-0.34-1.23)	23.7% (-24.9-55.6)
+intergenic	AGRE affected	26	0.014	15	0.014	15.4	-0.4	0.52	-0.03% (-0.93-0.83)	-2.4% (-122.3-43.7)
+genic noncoding	SSC affected	16	0.009	17	0.009	16.0	1.0	0.41	0.06% (-0.56-0.70)	6.1% (-92.9-57.3)
+genic noncoding	AGRE affected	16	0.009	7	0.006	9.5	-2.5	0.74	-0.22% (-0.80-0.43)	-35.0% (-316.3-43.3)

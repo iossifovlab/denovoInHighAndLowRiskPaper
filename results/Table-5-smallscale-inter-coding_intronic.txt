@@ -1,0 +1,10 @@
+			SSC unaffected		SSC affected
+	gene	event	normalization	functional	normalization	functional	expected functional				
+set	number	type	number	number	number	number	number	delta	pvalue	AD	PC
+all genes	19,512	IID	5,859	3,916	5,768	3,932	3,855.2	76.8	0.25	4.11% (-7.52-15.85)	2.0% (-3.7-7.4)
+autism LGD targets	748	IID	5,859	297	5,768	345	292.4	52.6	0.026	2.82% (-0.16-5.55)	15.3% (-1.0-28.0)
+all NDD LGD targets	1,521	IID	5,859	560	5,768	645	551.3	93.7	0.0080	5.01% (1.17-8.69)	14.5% (3.6-23.8)
+autism missense targets	3,560	IID	5,859	1,153	5,768	1,171	1,135.1	35.9	0.25	1.92% (-3.38-7.33)	3.1% (-5.6-11.3)
+autism synonymous targets	1,570	IID	5,859	561	5,768	569	552.3	16.7	0.30	0.89% (-2.89-4.90)	2.9% (-10.0-15.3)
+all genes	19,512	ISB	58,274	37,814	59,340	38,057	38,505.7	-448.7	0.90	-24.01% (-59.04-15.00)	-1.2% (-2.9-0.7)
+autism LGD targets	748	ISB	58,274	3,023	59,340	2,965	3,078.3	-113.3	0.92	-6.06% (-14.37-2.88)	-3.8% (-9.3-1.8)

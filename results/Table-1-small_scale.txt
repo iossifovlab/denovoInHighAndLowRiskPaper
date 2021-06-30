@@ -1,0 +1,4 @@
+	SSC unaffected		affected
+group	synonymous number	LGD number	synonymous number	LGD number	expected LGD number	delta	pval	AD	PC
+SSC affected	484	157	499	283	161.9	121.1	8e-07	6.48% (3.85-8.80)	42.8% (27.8-54.3)
+AGRE affected	484	157	309	116	100.2	15.8	0.14	1.42% (-1.25-4.15)	13.6% (-13.4-35.1)
