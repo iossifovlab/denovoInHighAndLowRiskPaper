@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import matplotlib as mpl
+mpl.use('Agg')
+
 from diData import *
 from result_tables import compareN, empStats
 

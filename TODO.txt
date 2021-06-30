@@ -1,13 +1,17 @@
 * Write a README file.
 
-* Rename the environment
-
-* Replace the children_tabletxt in the Supplementary Files with the version in the input directory.
+* Replace the children_table.txt in the Supplementary Files with the version in the input directory.
 
 * Replace the CNV_raw_table.txt in the Supplementary Files with the version in the input directory.
 
-* Replace the Supplementary Figure 1 with the one generated here.
+* Remove compareCNVs.py
 
-* Remove compare CNVs
+(DONE) Replace the Supplementary Figure 1 with the one generated here.
+
+(DONE) Rename the environment
+
+(DONE) Add the matplotlib line to all graph generating scripts to remove the dependence on DISPLAY.
+
+(DONE) Add the options to the Makefile that make sure that target files are deleted on error.
 
 (DONE) Updated the parameters in the figISBSignalPower.py to match the latest samples.

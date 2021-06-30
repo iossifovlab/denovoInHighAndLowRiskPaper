@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import matplotlib as mpl
+mpl.use('Agg')
+
 from pylab import *
 from scipy.stats import poisson,binom_test
 

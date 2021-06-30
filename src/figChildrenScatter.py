@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import matplotlib as mpl
+mpl.use('Agg')
+
 from pylab import *
 import matplotlib.gridspec as gridspec
 from matplotlib.transforms import Bbox

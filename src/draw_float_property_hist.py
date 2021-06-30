@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import matplotlib as mpl
+mpl.use('Agg')
+
 import sys
 from pylab import *
 from scipy.stats import ttest_ind,ks_2samp,ranksums,chi2_contingency,fisher_exact,mannwhitneyu

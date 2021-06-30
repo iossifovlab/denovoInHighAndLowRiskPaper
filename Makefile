@@ -1,3 +1,5 @@
+.DELETE_ON_ERROR:
+
 D=../src
 
 all: Figure-1-genomic-drift-outliers.png \
@@ -52,7 +54,7 @@ SuppFigure-5-PCbyCNVGeneN.png:
 SuppFigure-6-ratesVsAge.png:
 	$D/figRatesVsAge.py $@
 
-SuppFigure-7-ISB-power.png:
+SuppFigure-7-ISB-power.png: results.flag
 	$D/figISBSignalPower.py $@ 1
 
 SuppTable-8-propertyTable.txt:
