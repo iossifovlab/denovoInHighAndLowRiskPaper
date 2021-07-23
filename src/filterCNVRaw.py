@@ -3,7 +3,7 @@
 from diData import * 
 from collections import Counter
 
-F = open(resDir + "/CNV_raw_table.txt")
+F = open(resDir + "/Supplementary Data 6. CNV details.txt")
 hl = F.readline()
 print hl,
 hcs = hl.strip("\n\r").split("\t")

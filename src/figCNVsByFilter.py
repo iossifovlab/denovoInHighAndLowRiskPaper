@@ -6,7 +6,7 @@ mpl.use('Agg')
 from diData import * 
 from collections import Counter
 
-CNVR = genfromtxt(resDir + "/CNV_raw_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
+CNVR = genfromtxt(resDir + "/Supplementary Data 6. CNV details.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 
 okChldrnN = {pd.pId:0 for pd in persons.values()}
 flChldrnN = {pd.pId:0 for pd in outlierPersons.values()}

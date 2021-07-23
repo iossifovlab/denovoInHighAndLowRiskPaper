@@ -15,7 +15,7 @@ if len(sys.argv)>1:
     outDir = sys.argv[1]
 
 gnsS = set(GENE['gene'][GENE[CN('number of all NDD LGD variants')]>0])
-EVS = loadEVS(['SSC_small_denovo'])
+EVS = loadEVS(['Small scale de novo in SSC'])
 
 startFigureNumber = 9
 propDefs = [

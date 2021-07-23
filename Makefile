@@ -2,7 +2,7 @@
 
 D=../src
 
-all: Figure-1-genomic-drift-outliers.png \
+all: Figure-1-cell-line-genetic-drift-filter.png \
     Table-1-small_scale.txt Table-2-allCNVs.txt Table-3-simplex-vs-multiplex.txt \
     Table-4-oneGeneCNVs.txt Table-5-smallscale-inter-coding_intronic.txt \
     SuppTable-6-smallscale-peripheral.txt \
@@ -12,7 +12,7 @@ all: Figure-1-genomic-drift-outliers.png \
     SuppFigure-7-ISB-power.png \
     SuppTable-8-propertyTable.txt
 
-Figure-1-genomic-drift-outliers.png:
+Figure-1-cell-line-genetic-drift-filter.png:
 	$D/figChildrenScatter.py $@
 
 results.flag: 

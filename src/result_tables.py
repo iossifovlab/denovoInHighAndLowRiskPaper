@@ -486,7 +486,7 @@ if __name__ == "__main__":
 
     if seedV: seed(seedV)
         
-    EVS = loadEVS(['CNV_denovo', 'SSC_small_denovo', 'AGRE_small_denovo'])
+    EVS = loadEVS(['De novo CNV in SSC and AGRE', 'Small scale de novo in SSC', 'Small scale de novo in AGRE'])
 
     if tb == 'all':
         create_small_scale_result()

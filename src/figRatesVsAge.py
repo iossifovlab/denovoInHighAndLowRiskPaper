@@ -8,7 +8,7 @@ from diData import *
 from scipy import stats
 from collections import defaultdict
 
-EVS = loadEVS(['SSC_small_denovo'])
+EVS = loadEVS(['Small scale de novo in SSC'])
 
 CNT = defaultdict(lambda : {pid:0 for pid,pd in persons.items() if pd.coll == 'SSC'})
  

@@ -14,7 +14,7 @@ if seedV: seed(seedV)
 prbs = {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'prb'}
 sibs = {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'sib'}
 
-CNVs = loadEVS(['CNV_denovo'])
+CNVs = loadEVS(['De novo CNV in SSC and AGRE'])
 
 def countCNVs(chldrnIds,minGn):
     PSD = {pId:0 for pId in chldrnIds}

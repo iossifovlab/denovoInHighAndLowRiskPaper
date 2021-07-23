@@ -12,14 +12,14 @@ if 'DI_DATA_RES_DIR' in os.environ:
 def CN(column):
     return column.replace(" ","_").replace("'","").replace("-","").replace(",","")
 
-GENE = genfromtxt(resDir + "/gene_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
+GENE = genfromtxt(resDir + "/Supplementary Data 5. Genes.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 
 class Child:
     pass
 class Family:
     pass
 
-CHILDREN = genfromtxt(resDir + "/children_table.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
+CHILDREN = genfromtxt(resDir + "/Supplementary Data 1. Children.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 
 persons = defaultdict(int)
 outlierPersons = defaultdict(int)
@@ -60,7 +60,11 @@ def loadEVS(eventSets):
     personSet = set(persons)
     EVS = [] 
     for eventSet in eventSets:
-        fn = resDir + "/" + eventSet + "_table.txt"  
+        candidateFiles = list(glob.glob(resDir + "/*" + eventSet + ".txt"))
+        if len(candidateFiles) != 1:
+            raise Exception("Expected to find exaclty one file for eventsSet %s." \
+                            "Instead there are the following candidate files: %s" % (eventSet, str(candidateFiles)))
+        fn ,= candidateFiles
         print >>sys.stderr, "loading", fn, "..."
         try:
             EVD = genfromtxt(fn, delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)    
@@ -100,6 +104,3 @@ def loadEVS(eventSets):
             
             EVS.append(dn)
     return EVS
-
-if __name__ == "__main__":
-    print 'hi'

@@ -3,11 +3,11 @@
 from diData import * 
 from collections import Counter
 
-CNVs = loadEVS(['CNV_denovo'])
+CNVs = loadEVS(['De novo CNV in SSC and AGRE'])
 
 A = {(e.pid,e.variant,e.location) for e in CNVs }
 
-F = open(resDir + "/CNV_raw_table.txt")
+F = open(resDir + "/Supplementary Data 6. CNV details.txt")
 hl = F.readline()
 print hl,
 hcs = hl.strip("\n\r").split("\t")
