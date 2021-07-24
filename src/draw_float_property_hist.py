@@ -11,13 +11,20 @@ from diData import loadEVS, GENE, CN, persons
 from pV2Str import pV2Str
 
 outDir = "."
+tableNumber = 1
+startFigureNumber = 1
+
 if len(sys.argv)>1:
     outDir = sys.argv[1]
+if len(sys.argv)>2:
+    tableNumber = int(sys.argv[2])
+if len(sys.argv)>3:
+    startFigureNumber = int(sys.argv[3])
+
 
 gnsS = set(GENE['gene'][GENE[CN('number of all NDD LGD variants')]>0])
 EVS = loadEVS(['Small scale de novo in SSC'])
 
-startFigureNumber = 9
 propDefs = [
 #    prop,                                   doAbs, legendLeft, bestRank 
     ("variant size",                         True , False,      'max'    ),
@@ -103,7 +110,7 @@ def minRanks(evs):
                 if propN != 'minimum property rank' and propN != '__SECTION__']).T
     return allRnks.min(axis=1)
 
-TF = open(outDir + "/SuppTable-8-propertyTable.txt","w")
+TF = open(outDir + "/SuppTable-%s-propertyTable.txt" % (tableNumber),"w")
 TF.write("\t".join(['property','Supp. Fig. N.'] + ["-".join(map(clS,clp)) for clp in clps]) + "\n")
 
 propI = 0

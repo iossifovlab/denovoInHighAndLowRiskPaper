@@ -58,5 +58,5 @@ SuppFigure-7-ISB-power.png: results.flag
 	$D/figISBSignalPower.py $@ 1
 
 SuppTable-8-propertyTable.txt:
-	$D/draw_float_property_hist.py
+	$D/draw_float_property_hist.py . 8 8
 
