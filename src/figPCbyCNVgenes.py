@@ -3,7 +3,8 @@
 import matplotlib as mpl
 mpl.use('Agg')
 
-from diData import *
+from pylab import *
+from diData import persons, loadEVS
 from result_tables import compareN, empStats
 
 outFigName = None if len(sys.argv) < 2 else sys.argv[1]
@@ -34,7 +35,6 @@ for gi,gn in enumerate(geneNumbers):
     sibC = countCNVs(sibs,gn)
     sReal, sBtstrp = compareN(prbC,sibC,bootstrapI=1000)
     bcIR = empStats(sReal, sBtstrp, 'IR')
-    print gn,sReal.IR,bcIR.left95,bcIR.right95,sReal.Na,sReal.Nu
     plot(gn,sReal.IR,'*r')
     plot([gn,gn],[bcIR.left95,bcIR.right95],'r')
     xlbls.append("%d\n(%d, %d)" % (gn, sReal.Na,sReal.Nu))

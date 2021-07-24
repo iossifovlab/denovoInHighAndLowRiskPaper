@@ -3,8 +3,9 @@
 import matplotlib as mpl
 mpl.use('Agg')
 
-from diData import * 
-from collections import Counter
+from pylab import *
+from diData import resDir, persons, outlierPersons
+from collections import Counter, defaultdict
 
 CNVR = genfromtxt(resDir + "/Supplementary Data 6. CNV details.txt", delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 

@@ -12,7 +12,7 @@ IFN = "intronic_result_table.txt" if len(sys.argv) < 4 else int(sys.argv[3])
 
 if seedV: seed(seedV)
 
-RS = genfromtxt(IFN, delimiter='\t',dtype=None,names=True, case_sensitive=True)
+RS = genfromtxt(IFN, delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 RSD = {}
 for R in RS:
     k = (R['set'],R['eventType'],R['intronType'])

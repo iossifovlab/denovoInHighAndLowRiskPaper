@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from diData import * 
+from diData import resDir, persons, outlierPersons
 from collections import Counter
 
 F = open(resDir + "/Supplementary Data 6. CNV details.txt")

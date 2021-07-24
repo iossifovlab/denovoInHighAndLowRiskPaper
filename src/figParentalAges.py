@@ -3,8 +3,10 @@
 import matplotlib as mpl
 mpl.use('Agg')
 
-from diData import *
+from pylab import *
+from diData import persons, CN
 from scipy import stats
+from collections import defaultdict
 
 GRPSN = defaultdict(list)
 GRPMA = defaultdict(list)

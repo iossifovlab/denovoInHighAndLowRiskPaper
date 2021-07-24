@@ -21,7 +21,7 @@ IFN = "intronic_result_table.txt"
 if len(sys.argv) > 2:
     IFN = sys.argv[2] 
 
-RS = genfromtxt(IFN, delimiter='\t',dtype=None,names=True, case_sensitive=True)
+RS = genfromtxt(IFN, delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 
 RSD = {}
 for R in RS:

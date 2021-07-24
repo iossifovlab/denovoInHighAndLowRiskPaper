@@ -4,7 +4,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 
 from pylab import *
-from diData import *
+from diData import loadEVS, persons, CN
 from scipy import stats
 from collections import defaultdict
 
@@ -49,7 +49,6 @@ def p(tp,parent):
         tpvt = "%s*$10^{-%s}$" % (g,h.lstrip('-0'))
     else:
         tpvt = "$10^{-%s}$" % (h.lstrip('-0'))
-    print pvt
 
     text(15.,0.85*ylim()[1],'slope: %.1f / 10 years\np-value: %s' % (slope * 10.,tpvt))
 

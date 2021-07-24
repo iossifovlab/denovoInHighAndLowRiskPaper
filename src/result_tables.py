@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from diData import *
+from pylab import *
+from diData import GENE, persons, CN, loadEVS
 from collections import Counter, defaultdict
 from scipy.stats import chi2_contingency
 import scipy.stats as st
@@ -170,7 +171,11 @@ def empStats(sReal, sBckg, a):
 
     es.rsM = es.rs.mean()
     es.rsStd = es.rs.std()
-    es.z = (es.v - es.rsM) / es.rsStd
+    if es.rsStd == 0.0:
+        es.z = nan
+    else:
+        es.z = (es.v - es.rsM) / es.rsStd
+    # print("HHHH", es.rsStd, es.z, es.v, es.rsM)
     es.pvOneAn = st.norm.sf(es.z)
     es.pvTwoAn = one2twoPV(es.pvOneAn)
 
@@ -201,17 +206,11 @@ def create_small_scale_result():
             cnts = count(grpChIds, supFltr)
             CNTS_N[grpName,effTp] = {pid:(c,SYN[pid]) for pid,c in cnts.items()}
 
-    def sm(g,e):
-        return sum(CNTS[g,e].values())
-
     SSTF = open(outDir + '/small_scale_result_table.txt', 'w')
     ohcs = ['group','backgroundGroup', 'effect']
     ohcs += "sReal.U sReal.Nu sReal.Xu sReal.A sReal.Na sReal.Xa sReal.RaR sReal.ENa sReal.delta sReal.AD bcAD.left95 bcAD.right95 esAD.pvOne esAD.z esAD.pvOneAn sReal.IR bcIR.left95 bcIR.right95".split()
 
     SSTF.write("\t".join(ohcs)+'\n')
-    globalRatios = {}
-    obsNCntss = {}
-    normSums = {} 
     for grpName,grpNameB in [
                 ("SSC affected", "SSC unaffected"),
                 ("AGRE affected","SSC unaffected"),
@@ -228,7 +227,6 @@ def create_small_scale_result():
     
             cs += map(str,[sReal.U, sReal.Nu, sReal.Xu, sReal.A, sReal.Na, sReal.Xa, sReal.RaR, sReal.ENa, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn, sReal.IR, bcIR.left95, bcIR.right95])
 
-            print "\t".join(map(str,cs))
             SSTF.write("\t".join(map(str,cs))+'\n')
     SSTF.close()
 
@@ -252,7 +250,6 @@ def create_merged_intron_result():
 
     MIF = open(outDir + '/merged_intron_results.txt', 'w')
     ohcs = "genes geneNumber B EB delta AD AD.left AD.right AD.pval AD.z AD.pvOneAn".split()
-    print "\t".join(ohcs)
     MIF.write("\t".join(ohcs) + "\n")
 
     targetDef = [
@@ -279,7 +276,6 @@ def create_merged_intron_result():
         esAD = empStats(sReal, sNullBckg, 'AD')
         bcAD = empStats(sReal, sBtstrp, 'AD')
         cs = map(str,[setK, len(genes), sReal.B, sReal.EB, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn])
-        print "\t".join(cs)
         MIF.write("\t".join(cs) + "\n")
     MIF.close()
 
@@ -317,7 +313,6 @@ def create_merged_smimplex_vs_multiplex_result():
     ohcs = ["foreground group", "background group"]
     ohcs += "B EB delta AD AD.left AD.right AD.pval AD.z AD.pvOneAn".split()
 
-    print "\t".join(ohcs)
     MSMF.write("\t".join(ohcs) + "\n")
     for grpF,grpB in [
                     ['SSC affected','SSC unaffected'],
@@ -331,7 +326,6 @@ def create_merged_smimplex_vs_multiplex_result():
         bcAD = empStats(sReal, sBtstrp, 'AD')
         cs = [grpF, grpB]
         cs += map(str,[sReal.B, sReal.EB, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn])
-        print "\t".join(map(str,cs))
         MSMF.write("\t".join(map(str,cs)) + "\n")
     MSMF.close()
 
@@ -344,14 +338,9 @@ def create_CNV_result():
 
     CRTF = open(outDir + '/CNV_result_table.txt', 'w')
 
-    for grpName,grpChIds in CGG:
-        print grpName, len(grpChIds)
-
-
     def okCNV(e):
         return e.atts['size'] > 4000 and e.vtype == 'CNV'
         
-
     allEffTps = [
         ['all', lambda e: okCNV(e)],
         ['coding', lambda e: okCNV(e) and e.genomicRegion == 'coding'],
@@ -440,7 +429,6 @@ def create_intronic_result():
     hcs = "set eventType intronType setGeneNumber".split(" ")
     hcs += "sReal.U sReal.Nu sReal.Xu sReal.A sReal.Na sReal.Xa sReal.RaR sReal.ENa sReal.delta sReal.AD bcAD.left95 bcAD.right95 esAD.pvOne esAD.z esAD.pvOneAn sReal.IR bcIR.left95 bcIR.right95".split()
     IRTF.write("\t".join(hcs)+"\n")
-    print "\t".join(hcs)
 
     normVariant = {
         "sub":   count(persons, lambda e: (not e.location.startswith('chrX')) and e.genomicRegion == 'intergenic' and e.vtype in ['sub'] and len(e.pids) == 1),
@@ -474,7 +462,6 @@ def create_intronic_result():
                 bcAD = empStats(sReal, sBtstrp, 'AD')
                 bcIR = empStats(sReal, sBtstrp, 'IR')
                 cs += map(str,[sReal.U, sReal.Nu, sReal.Xu, sReal.A, sReal.Na, sReal.Xa, sReal.RaR, sReal.ENa, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn, sReal.IR, bcIR.left95, bcIR.right95])
-                print "\t".join(map(str,cs))
                 IRTF.write("\t".join(map(str,cs))+"\n")
 
     IRTF.close()
@@ -505,5 +492,5 @@ if __name__ == "__main__":
     elif tb == 'merged_intron':
         create_merged_intron_result()
     else:
-        print "The argument should be all or small_scale or CNV or intronic or merged_simplex_multiplex or merged_intron" 
+        print("The argument should be all or small_scale or CNV or intronic or merged_simplex_multiplex or merged_intron")
     

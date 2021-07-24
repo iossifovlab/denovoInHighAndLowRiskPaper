@@ -7,7 +7,7 @@ import sys
 from pylab import *
 from scipy.stats import ttest_ind,ks_2samp,ranksums,chi2_contingency,fisher_exact,mannwhitneyu
 from scipy.stats import rankdata
-from diData import *
+from diData import loadEVS, GENE, CN, persons
 from pV2Str import pV2Str
 
 outDir = "."
@@ -132,8 +132,6 @@ for propN,doAbs,legendLeft,bestRank in propDefs:
         vEvs = vEvs[isfinite(prop)] 
         prop = prop[isfinite(prop)] 
 
-        print "%35s %7s %5d %8.3f %8.3f" % (propN,varT,len(vEvs),min(prop),max(prop)), "prop=", prop
-
         if doAbs:
             prop = abs(prop)
 
@@ -142,7 +140,7 @@ for propN,doAbs,legendLeft,bestRank in propDefs:
             mxs.append(max(prop)) 
         except ValueError:
             values_empty=True  
-            print "no values for ", propN            
+            print("no values for ", propN)
 
         inPrb = array(['prb' in {persons[pid].role for pid in e.pids} for e in vEvs])
         inSib = array(['sib' in {persons[pid].role for pid in e.pids} for e in vEvs])
@@ -178,8 +176,8 @@ for propN,doAbs,legendLeft,bestRank in propDefs:
         else:
             vs1=[]
             vs2=[]
-        a,bns,b = hist(vs1,bins=bns,alpha=0.5,normed=True,color='blue')
-        a,bns,b = hist(vs2,bins=bns,alpha=0.5,normed=True,color='green')
+        a,bns,b = hist(vs1,bins=bns,alpha=0.5,density=True,color='blue')
+        a,bns,b = hist(vs2,bins=bns,alpha=0.5,density=True,color='green')
 
         if len(vs1) != 0 and len(vs2) != 0:
             aKs = ks_2samp(vs1,vs2)[1] 

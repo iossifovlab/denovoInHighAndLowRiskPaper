@@ -8,15 +8,9 @@ import matplotlib.gridspec as gridspec
 from matplotlib.transforms import Bbox
 from scipy import stats
 import twodnorm
-from diData import *
+import sys
+from diData import persons, outlierPersons, CN
 
-# colorDefs = {"SW": 'g', "AW": 'r', "AL": 'b'}
-
-colorDefs = {
-    "SW": [0  ,255,0  ], 
-    "AW": [255,0  ,0  ], 
-    "AL": [0  ,0  ,255]
-}
 colorDefs = {
     "SW": [240,228,66 ], 
     "AW": [0  ,158,115], 

@@ -65,12 +65,7 @@ def loadEVS(eventSets):
             raise Exception("Expected to find exaclty one file for eventsSet %s." \
                             "Instead there are the following candidate files: %s" % (eventSet, str(candidateFiles)))
         fn ,= candidateFiles
-        print >>sys.stderr, "loading", fn, "..."
-        try:
-            EVD = genfromtxt(fn, delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)    
-        except Exception:
-            print >>sys.stderr, "FAILED TO LOAD", fn
-            continue
+        EVD = genfromtxt(fn, delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)    
         for r in EVD:
             dn = Denovo()
             dn.fmid =  str(r['familyId'])

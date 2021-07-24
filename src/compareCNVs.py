@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from diData import * 
+from diData import loadEVS, resDir
 from collections import Counter
 
 CNVs = loadEVS(['De novo CNV in SSC and AGRE'])
