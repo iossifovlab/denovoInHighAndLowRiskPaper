@@ -15,7 +15,7 @@ def count(chldrnIds,varFilterF):
                 PSD[pid] += 1
     return PSD 
 
-def compareN2(cF1,cB1,cF2,cB2,nullI=0,bootstrapI=0,norStandard=None):
+def compareN2(cF1,cB1,cF2,cB2,nullI=0,bootstrapI=0):
     assert cF1.keys() == cF2.keys()
     assert cB1.keys() == cB2.keys()
 
@@ -84,7 +84,7 @@ def compareN2(cF1,cB1,cF2,cB2,nullI=0,bootstrapI=0,norStandard=None):
         r.append(bts)
     return r 
 
-def compareN(cF,cB,nullI=0,bootstrapI=0,norStandard=None):
+def compareN(cF,cB,nullI=0,bootstrapI=0):
     NV = []
     XV = []
     SV = []
@@ -130,9 +130,6 @@ def compareN(cF,cB,nullI=0,bootstrapI=0,norStandard=None):
         s.RaR = float(s.Na)/s.A
         s.RuR = float(s.Nu)/s.U
 
-        if norStandard:
-            s.RaN = norStandard * s.Na/float(s.Xa)
-            s.RuN = norStandard * s.Nu/float(s.Xu)
         return s
     sReal = vStats(NV,XV,SV)
     r = [sReal]
@@ -181,22 +178,21 @@ def empStats(sReal, sBckg, a):
 
     return es
 
-def create_small_scale_result():
-    CGG = [
-        ["SSC unaffected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'sib'}], 
-        ["SSC affected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'prb'}],
-        ["AGRE affected", {pd.pId for pd in persons.values() if pd.coll == 'AGRE' and pd.role == 'prb'}]
-    ]
+CGG = [
+    ["SSC unaffected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'sib'}], 
+    ["SSC affected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'prb'}],
+    ["AGRE affected", {pd.pId for pd in persons.values() if pd.coll == 'AGRE' and pd.role == 'prb'}]
+]
 
+
+def create_small_scale_result():
     effTps = ['synonymous', 'LGD', 'nonsense', 'splice-site', 'frame-shift', 'missense']
 
     CNTS_N = {}
 
     SYN = count(persons, lambda e: (not e.location.startswith('chrX')) and e.eff == 'synonymous')
     for grpName,grpChIds in CGG:
-
         for effTp in effTps:
-
             if effTp == 'LGD':
                 effTpS = set(['nonsense','frame-shift','splice-site'])
             else:
@@ -230,112 +226,7 @@ def create_small_scale_result():
             SSTF.write("\t".join(map(str,cs))+'\n')
     SSTF.close()
 
-def create_merged_intron_result():
-    def isIntercodingCNV(e):
-        return e.vtype == 'CNV' and len(e.gns) and e.genomicRegion == 'inter-coding_intronic'
-
-
-    indelVarTs= set(['del', 'ins'])
-    def isTargetIntercodingIndel(e,genesP):
-        return e.vtype in indelVarTs and e.genomicRegion == "inter-coding_intronic"  and e.gns & genesP 
-    
-    def isIntergenicIndel(e):
-        return e.vtype in indelVarTs and e.eff == 'intergenic'
-
-    def cntHelp(f):
-        return count(persons, lambda e: (not e.location.startswith('chrX')) and f(e))
-
-    ICNV = cntHelp(isIntercodingCNV)
-    GIND = cntHelp(isIntergenicIndel)
-
-    MIF = open(outDir + '/merged_intron_results.txt', 'w')
-    ohcs = "genes geneNumber B EB delta AD AD.left AD.right AD.pval AD.z AD.pvOneAn".split()
-    MIF.write("\t".join(ohcs) + "\n")
-
-    targetDef = [
-        'autism LGD',
-        'all NDD LGD',
-    ]
-    for setK in targetDef:
-        cn = 'number_of_' + CN(setK) + "_variants"
-        genes = set(GENE['gene'][GENE[cn]>0])
-
-        IIND = cntHelp(lambda e: isTargetIntercodingIndel(e,genes))
-
-        CNTS_SEP_N = {}
-        for role in ['prb','sib']:
-            grpChIds = {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == role}
-            CNTS_SEP_N[role] = (
-                        {pid:(ICNV[pid], 1.0) for pid in grpChIds},
-                        {pid:(IIND[pid], GIND[pid]) for pid in grpChIds}
-                    ) 
-
-        cntsF_ICNV,cntsF_IINDs = CNTS_SEP_N['prb']
-        cntsB_ICNV,cntsB_IINDs = CNTS_SEP_N['sib']
-        sReal, sNullBckg, sBtstrp = compareN2(cntsF_ICNV, cntsB_ICNV, cntsF_IINDs, cntsB_IINDs, nullI=10000, bootstrapI=10000)
-        esAD = empStats(sReal, sNullBckg, 'AD')
-        bcAD = empStats(sReal, sBtstrp, 'AD')
-        cs = map(str,[setK, len(genes), sReal.B, sReal.EB, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn])
-        MIF.write("\t".join(cs) + "\n")
-    MIF.close()
-
-def create_merged_smimplex_vs_multiplex_result():
-    CGG = [
-        ["SSC unaffected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'sib'}], 
-        ["SSC affected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'prb'}],
-        ["AGRE affected", {pd.pId for pd in persons.values() if pd.coll == 'AGRE' and pd.role == 'prb'}]
-    ]
-    def isCodingCNV(e):
-        return e.vtype == 'CNV' and e.atts['size'] > 4000 and e.genomicRegion == 'coding'
-
-    LGDEffs = set(['nonsense','frame-shift','splice-site'])
-    def isLGD(e):
-        return e.eff in LGDEffs
-    
-    def isSynonymous(e):
-        return e.eff == 'synonymous'
-
-    def cntHelp(f):
-        return count(persons, lambda e: (not e.location.startswith('chrX')) and f(e))
-    SYN = cntHelp(isSynonymous)
-    LGD = cntHelp(isLGD)
-    CNV = cntHelp(isCodingCNV)
-
-    CNTS_SEP_N = {}
-    for grpName,grpChIds in CGG:
-        CNTS_SEP_N[grpName] = (
-                    {pid:(CNV[pid], 1.0) for pid in grpChIds},
-                    {pid:(LGD[pid],SYN[pid]) for pid in grpChIds}
-                ) 
-
-    MSMF = open(outDir + '/merged_simplex_multiplex_results.txt', 'w')
-
-    ohcs = ["foreground group", "background group"]
-    ohcs += "B EB delta AD AD.left AD.right AD.pval AD.z AD.pvOneAn".split()
-
-    MSMF.write("\t".join(ohcs) + "\n")
-    for grpF,grpB in [
-                    ['SSC affected','SSC unaffected'],
-                    ['AGRE affected','SSC unaffected'],
-                    ['SSC affected','AGRE affected'] ]:
-
-        cntsF_CNV,cntsF_LGDs = CNTS_SEP_N[grpF]
-        cntsB_CNV,cntsB_LGDs = CNTS_SEP_N[grpB]
-        sReal, sNullBckg, sBtstrp = compareN2(cntsF_CNV, cntsB_CNV, cntsF_LGDs, cntsB_LGDs ,nullI=1000,bootstrapI=1000)
-        esAD = empStats(sReal, sNullBckg, 'AD')
-        bcAD = empStats(sReal, sBtstrp, 'AD')
-        cs = [grpF, grpB]
-        cs += map(str,[sReal.B, sReal.EB, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn])
-        MSMF.write("\t".join(map(str,cs)) + "\n")
-    MSMF.close()
-
 def create_CNV_result():
-    CGG = [
-        ["SSC unaffected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'sib'}], 
-        ["SSC affected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'prb'}],
-        ["AGRE affected", {pd.pId for pd in persons.values() if pd.coll == 'AGRE' and pd.role == 'prb'}]
-    ]
-
     CRTF = open(outDir + '/CNV_result_table.txt', 'w')
 
     def okCNV(e):
@@ -409,11 +300,55 @@ def create_CNV_result():
         CRTF.write("#\t%s: %d\n" % (grpName, len(grpChIds)))
     CRTF.close()
 
+def create_merged_smimplex_vs_multiplex_result():
+    def isCodingCNV(e):
+        return e.vtype == 'CNV' and e.atts['size'] > 4000 and e.genomicRegion == 'coding'
+
+    LGDEffs = set(['nonsense','frame-shift','splice-site'])
+    def isLGD(e):
+        return e.eff in LGDEffs
+    
+    def isSynonymous(e):
+        return e.eff == 'synonymous'
+
+    def cntHelp(f):
+        return count(persons, lambda e: (not e.location.startswith('chrX')) and f(e))
+    SYN = cntHelp(isSynonymous)
+    LGD = cntHelp(isLGD)
+    CNV = cntHelp(isCodingCNV)
+
+    CNTS_SEP_N = {}
+    for grpName,grpChIds in CGG:
+        CNTS_SEP_N[grpName] = (
+                    {pid:(CNV[pid], 1.0) for pid in grpChIds},
+                    {pid:(LGD[pid],SYN[pid]) for pid in grpChIds}
+                ) 
+
+    MSMF = open(outDir + '/merged_simplex_multiplex_results.txt', 'w')
+
+    ohcs = ["foreground group", "background group"]
+    ohcs += "B EB delta AD AD.left AD.right AD.pval AD.z AD.pvOneAn".split()
+
+    MSMF.write("\t".join(ohcs) + "\n")
+    for grpF,grpB in [
+                    ['SSC affected','SSC unaffected'],
+                    ['AGRE affected','SSC unaffected'],
+                    ['SSC affected','AGRE affected'] ]:
+
+        cntsF_CNV,cntsF_LGDs = CNTS_SEP_N[grpF]
+        cntsB_CNV,cntsB_LGDs = CNTS_SEP_N[grpB]
+        sReal, sNullBckg, sBtstrp = compareN2(cntsF_CNV, cntsB_CNV, cntsF_LGDs, cntsB_LGDs ,nullI=1000,bootstrapI=1000)
+        esAD = empStats(sReal, sNullBckg, 'AD')
+        bcAD = empStats(sReal, sBtstrp, 'AD')
+        cs = [grpF, grpB]
+        cs += map(str,[sReal.B, sReal.EB, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn])
+        MSMF.write("\t".join(map(str,cs)) + "\n")
+    MSMF.close()
+
 def create_intronic_result():
-
-    prbs = {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'prb'}
-    sibs = {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'sib'}
-
+    CGGD = {k:iis for k,iis in CGG}
+    prbs = CGGD["SSC affected"]
+    sibs = CGGD["SSC unaffected"]
     mtSets = [
         'all genes',
         'autism LGD',
@@ -443,9 +378,7 @@ def create_intronic_result():
             iis = GENE[cn] > 0
         
         for eT,varTs in zip(["indel","sub"],[set(["del","ins"]),set(["sub"])]):
-
             for effT in ["inter-coding_intronic","peripheral"]:
-                
                 gnsS = set(GENE['gene'][iis])
 
                 cs = [stK,eT,effT,iis.sum()] 
@@ -463,7 +396,6 @@ def create_intronic_result():
                 bcIR = empStats(sReal, sBtstrp, 'IR')
                 cs += map(str,[sReal.U, sReal.Nu, sReal.Xu, sReal.A, sReal.Na, sReal.Xa, sReal.RaR, sReal.ENa, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn, sReal.IR, bcIR.left95, bcIR.right95])
                 IRTF.write("\t".join(map(str,cs))+"\n")
-
     IRTF.close()
 
 if __name__ == "__main__":
@@ -480,7 +412,6 @@ if __name__ == "__main__":
         create_intronic_result()
         create_CNV_result()
         create_merged_smimplex_vs_multiplex_result()
-        create_merged_intron_result()
     elif tb == 'small_scale':
         create_small_scale_result()
     elif tb == 'CNV':
@@ -489,8 +420,6 @@ if __name__ == "__main__":
         create_intronic_result()
     elif tb == 'merged_simplex_multiplex':
         create_merged_smimplex_vs_multiplex_result()
-    elif tb == 'merged_intron':
-        create_merged_intron_result()
     else:
         print("The argument should be all or small_scale or CNV or intronic or merged_simplex_multiplex or merged_intron")
     
