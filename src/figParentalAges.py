@@ -24,15 +24,21 @@ def pltD(aAll,c,f,t,lw=1,onY=False,):
     density = stats.kde.gaussian_kde(a)
     x = linspace(f,t,1000)
     if onY:
-        plot(density(x), x,c,lw=lw)
+        plot(density(x), x,c=c,lw=lw)
     else:
-        plot(x, density(x),c,lw=lw)
+        plot(x, density(x),c=c,lw=lw)
     return len(a)
 
 
 clf()
 spi = 0
-chldSetDef = [['SSC','affected','r'],['SSC','unaffected','g'], ['AGRE','affected', 'k']]
+
+chldSetDef = [
+    ['SSC' , 'affected'  , [213/255., 94 /255., 0  /255.]],
+    ['SSC' , 'unaffected', [0  /255., 158/255., 115/255.]], 
+    ['AGRE', 'affected'  , [0  /255., 0  /255., 0  /255.]]
+]
+
 for par,GS in zip(['father','mother'],[GRPDA,GRPMA]):
     spi += 1
     subplot(2,2,spi)
@@ -56,9 +62,9 @@ for par,GS in zip(['father','mother'],[GRPDA,GRPMA]):
         ages = agesAll[logical_not(isnan(agesAll))] 
         mn = mean(ages)
         se = 2*stats.sem(ages)
-        plot([ci],[mn],c+'o')
-        plot([ci,ci],[mn-se,mn+se],c+'-')
-        plot([0,2],[mn,mn],c+':')
+        plot([ci],[mn],'o',c=c)
+        plot([ci,ci],[mn-se,mn+se],'-',c=c)
+        plot([0,2],[mn,mn],':',c=c)
         lgnds.append('%s %s' % (coll, affSt))
     xticks([0,1,2],lgnds)
     ylabel('age')

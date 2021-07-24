@@ -57,8 +57,8 @@ hcs = ls[0].split("\t")
     
 def plotFCI(n,x,c):
     bd = beta(n,10000-n)
-    lid = plot([x,x],[bd.ppf(0.05),bd.isf(0.05)],c,lw=2,alpha=0.5)
-    plot([x],n/10000.,c + '*')
+    lid = plot([x,x],[bd.ppf(0.05),bd.isf(0.05)],c=c,lw=2)
+    plot([x],n/10000.,'*',c=c)
     return lid[0]
 
 clf()
@@ -74,8 +74,8 @@ for x,l in enumerate(ls[1:]):
     sscAutOK = int(sscAutOK)
     sscSibOK = int(sscSibOK)
     aal = plotFCI(agreAutOK,x,'k')
-    sal = plotFCI(sscAutOK,x,'r')
-    ssl = plotFCI(sscSibOK,x,'g')
+    sal = plotFCI(sscAutOK,x,[213/255., 94 /255., 0  /255.])
+    ssl = plotFCI(sscSibOK,x,[0  /255., 158/255., 115/255.])
     xls.append(cnvSize)
 # xticks(arange(len(xls)),xls,fontsize=8,rotation=-90)
 xticks(arange(len(xls)),xls)

@@ -14,12 +14,16 @@ def pltD(aAll,c,f,t,lw=1,onY=False,):
     density = stats.kde.gaussian_kde(a)
     x = linspace(f,t,1000)
     if onY:
-        plot(density(x), x,c,lw=lw)
+        plot(density(x), x,c=c,lw=lw)
     else:
-        plot(x, density(x),c,lw=lw)
+        plot(x, density(x),c=c,lw=lw)
     return len(a)
 
-chldSetDef = [['SSC','affected','r'],['SSC','unaffected','g'], ['AGRE','affected', 'k']]
+chldSetDef = [
+    ['SSC' , 'affected'  , [213/255., 94 /255., 0  /255.]],
+    ['SSC' , 'unaffected', [0  /255., 158/255., 115/255.]], 
+    ['AGRE', 'affected'  , [0  /255., 0  /255., 0  /255.]]
+]
 
 figure()
 GRPP = defaultdict(list)
