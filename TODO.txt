@@ -1,6 +1,6 @@
-* Write a README file.
+(DONE) Write a README file.
 
-* Remove compareCNVs.py
+(DONE) Remove compareCNVs.py
 
 (DONE) Replace the CNV_raw_table.txt in the Supplementary Files with the version in the input directory.
 
