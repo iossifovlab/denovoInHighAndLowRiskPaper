@@ -16,10 +16,20 @@ We wrote our python scripts in Python 2.7 using few packages outside of the stan
 
 First, you have to install conda following the instructions in [Conda Installation](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
-Then you should create and activate a conda environment using the specification in the **environment.yml" files. You can do that with the following commands executed from the directory containing the clone of this repository:
+Then you should create and activate a conda environment using the specification in the **environment.yml" file. You can do that with the following commands executed from the directory containing the clone of this repository:
 
     $ cd .../denovoInHighAndLowRiskPaper
     $ conda env create
     $ conda activate denovoInHighAndLowRiskPaper
 
+The **denovoInHighAndLowRiskPaper** name of the conda environment is specified in the **environment.yml** file. After you activate the **denovoInHighAndLowRiskPaper** environment, you would be able to run each of the scripts using a command like:
+
+    $ python src/figRatesVsAge.py
+
 ### Step 2. Execute all the scripts using **make**
+
+The **Makefile** contains the instructions on how to execute the scripts needed to generate all the results. The standard took *make*** can read execute the instructions included in the **Makefile** 
+
+    $ mkdir myresults
+    $ cd myresults
+    $ make -f ../Makefile -j
