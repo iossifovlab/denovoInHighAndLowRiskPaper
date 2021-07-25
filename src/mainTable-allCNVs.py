@@ -35,14 +35,14 @@ for effT in ['all','coding','intergenic','genic noncoding']:
         R = RSD['ALL EVENTS',effT,'cnvs',grp,'SSC unaffected']
         cs = [effT,grp]
         for s in 'ua':
-            N = int(R['sReal.N' + s])
-            C = int(R['sReal.X' + s])
+            N = int(R['sReal.S' + s])
+            C = int(R['sReal.N' + s])
             cs += [str(N), '%.3f' % (float(N)/C)]
 
-        cs += ["%.1f" % (float(R[a])) for a in ['sReal.ENa','sReal.delta']] + \
+        cs += ["%.1f" % (float(R[a])) for a in ['sReal.ESa','sReal.delta']] + \
               [pV2Str(float(R['esAD.pvOneAn']))] + \
               ["%.2f%% (%.2f-%.2f)" % tuple([float(R[a]) for a in ['sReal.AD','bcAD.left95','bcAD.right95']])] + \
-              ["%.1f%% (%.1f-%.1f)" % tuple([float(R[a]) for a in ['sReal.IR','bcIR.left95','bcIR.right95']])]
+              ["%.1f%% (%.1f-%.1f)" % tuple([float(R[a]) for a in ['sReal.PC','bcPC.left95','bcPC.right95']])]
         print "\t".join(cs)
 
 

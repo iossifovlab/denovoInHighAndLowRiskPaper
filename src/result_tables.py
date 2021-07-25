@@ -1,189 +1,42 @@
 #!/usr/bin/env python
 
 from pylab import *
-from diData import GENE, persons, CN, loadEVS
 from collections import Counter, defaultdict
 from scipy.stats import chi2_contingency
 import scipy.stats as st
+from diData import GENE, persons, CN, loadEVS
+from methods import compare_subject_variant_class_in_two_groups_using_normalization_variant_class, empStats
+from methods import compare_joinly_two_subject_variant_classes_in_two_groups_using_the_separate_normalization_variant_classes
+
+_EVS = loadEVS(['De novo CNV in SSC and AGRE', 'Small scale de novo in SSC', 'Small scale de novo in AGRE'])
 
 def count(chldrnIds,varFilterF):
     PSD = {pId:0 for pId in chldrnIds}
-    for e in EVS:
+    for e in _EVS:
         if not varFilterF(e): continue
         for pid in e.pids:
             if pid in PSD:
                 PSD[pid] += 1
     return PSD 
 
-def compareN2(cF1,cB1,cF2,cB2,nullI=0,bootstrapI=0):
-    assert cF1.keys() == cF2.keys()
-    assert cB1.keys() == cB2.keys()
-
-    N1V = []
-    X1V = []
-    N2V = []
-    X2V = []
-    SV = []
-    for ci,(c1,c2) in enumerate([(cB1,cB2),(cF1,cF2)]):
-        for pid,(n,x) in sorted(c1.items()):
-            N1V.append(n) 
-            X1V.append(x) 
-            SV.append(ci) 
-        for pid,(n,x) in sorted(c2.items()):
-            N2V.append(n) 
-            X2V.append(x) 
-    N1V = array(N1V)
-    X1V = array(X1V)
-    N2V = array(N2V)
-    X2V = array(X2V)
-    SV = array(SV)
-
-    def vStats(N1V,X1V,N2V,X2V,SV):
-        class VStats:
-                pass
-        s = VStats() 
-
-        s.A = (SV==1).sum()
-        s.U = (SV==0).sum()
-
-        s.N1a = N1V[SV==1].sum()
-        s.N1u = N1V[SV==0].sum() 
-        s.X1a = X1V[SV==1].sum()
-        s.X1u = X1V[SV==0].sum()
-
-        s.N2a = N2V[SV==1].sum()
-        s.N2u = N2V[SV==0].sum() 
-        s.X2a = X2V[SV==1].sum()
-        s.X2u = X2V[SV==0].sum()
-
-        s.R1a = float(s.N1a) / s.X1a
-        s.R1u = float(s.N1u) / s.X1u
-
-        s.R2a = float(s.N2a) / s.X2a
-        s.R2u = float(s.N2u) / s.X2u
-
-        s.EN1a = s.R1u * s.X1a
-        s.EN2a = s.R2u * s.X2a
-
-        s.B = s.N1a + s.N2a
-        s.EB = s.EN1a + s.EN2a
-        s.delta = s.B - s.EB
-
-        s.AD = 100. * s.delta / s.A 
-
-        return s
-    sReal = vStats(N1V,X1V,N2V,X2V,SV)
-    r = [sReal]
-    if nullI:
-        r.append([vStats(N1V,X1V,N2V,X2V,permutation(SV)) for e in xrange(nullI)])
-    if bootstrapI:
-        bts = []
-        for e in xrange(bootstrapI):
-            ris = randint(len(SV),size=len(SV))
-            bts.append(vStats(N1V[ris],X1V[ris],N2V[ris],X2V[ris],SV[ris]))
-        r.append(bts)
-    return r 
-
-def compareN(cF,cB,nullI=0,bootstrapI=0):
-    NV = []
-    XV = []
-    SV = []
-    for ci,c in enumerate([cB,cF]):
-        for pid,(n,x) in sorted(c.items()):
-            NV.append(n) 
-            XV.append(x) 
-            SV.append(ci) 
-    NV = array(NV)
-    XV = array(XV)
-    SV = array(SV)
-
-    def vStats(NV,XV,SV):
-        class VStats:
-                pass
-        s = VStats() 
-
-        s.A = (SV==1).sum()
-        s.U = (SV==0).sum()
-        s.Na = NV[SV==1].sum()
-        s.Nu = NV[SV==0].sum() 
-        s.Xa = XV[SV==1].sum()
-        s.Xu = XV[SV==0].sum()
-
-        s.RTa = float(s.Na) / s.Xa
-        s.RTu = float(s.Nu) / s.Xu
-
-        s.ENa = s.RTu * s.Xa
-        s.delta = s.Na - s.ENa
-
-        s.AD = 100. * s.delta / s.A 
-
-        if s.RTa:
-            s.IR = 100. * (s.RTa-s.RTu) / s.RTa
-        else:
-            s.IR = 100. 
-
-        if s.Na:
-            s.CP = 100. * s.delta / s.Na 
-        else:
-            s.CP = 100. 
-
-        s.RaR = float(s.Na)/s.A
-        s.RuR = float(s.Nu)/s.U
-
-        return s
-    sReal = vStats(NV,XV,SV)
-    r = [sReal]
-    if nullI:
-        r.append([vStats(NV,XV,permutation(SV)) for e in xrange(nullI)])
-    if bootstrapI:
-        bts = []
-        for e in xrange(bootstrapI):
-            ris = randint(len(NV),size=len(NV))
-            bts.append(vStats(NV[ris],XV[ris],SV[ris]))
-        r.append(bts)
-    return r 
-
-def empStats(sReal, sBckg, a):
-    class EMPStats:
-        pass 
-
-    def one2twoPV(op):
-        tp = 2.*op
-        if tp > 1.0:
-            tp = 2.*(1.-op)
-        return tp
-
-
-    es = EMPStats()
-    es.v = getattr(sReal,a)
-    es.rs = array([getattr(s,a) for s in sBckg])
-
-    es.pvOne = (es.rs>=es.v).sum()/float(len(es.rs))
-    es.pvTwo = one2twoPV(es.pvOne)
-
-    rss = sort(es.rs)
-    d = int(len(rss) * 0.025)
-    es.left95 = rss[d]
-    es.right95 = rss[-d]
-
-    es.rsM = es.rs.mean()
-    es.rsStd = es.rs.std()
-    if es.rsStd == 0.0:
-        es.z = nan
-    else:
-        es.z = (es.v - es.rsM) / es.rsStd
-    # print("HHHH", es.rsStd, es.z, es.v, es.rsM)
-    es.pvOneAn = st.norm.sf(es.z)
-    es.pvTwoAn = one2twoPV(es.pvOneAn)
-
-    return es
-
-CGG = [
+_CGG = [
     ["SSC unaffected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'sib'}], 
     ["SSC affected", {pd.pId for pd in persons.values() if pd.coll == 'SSC' and pd.role == 'prb'}],
     ["AGRE affected", {pd.pId for pd in persons.values() if pd.coll == 'AGRE' and pd.role == 'prb'}]
 ]
 
+_oneSubjectClassStatsColumns = ("sReal.Cu sReal.Su sReal.Nu " + \
+                               "sReal.Ca sReal.Sa sReal.Na " + \
+                               "sReal.RSa sReal.ESa sReal.delta " + \
+                               "sReal.AD bcAD.left95 bcAD.right95 esAD.pvOne esAD.z esAD.pvOneAn " + \
+                               "sReal.PC bcPC.left95 bcPC.right95").split()
+
+def _computeOneSubjectStatsColumns(countsInAffected,countsInUnaffected):
+    sReal, sNullBckg, sBtstrp = compare_subject_variant_class_in_two_groups_using_normalization_variant_class(countsInAffected,countsInUnaffected,nullI=1000,bootstrapI=1000)
+    esAD = empStats(sReal, sNullBckg, 'AD')
+    bcAD = empStats(sReal, sBtstrp, 'AD')
+    bcPC = empStats(sReal, sBtstrp, 'PC')  
+    return map(str,[sReal.Cu, sReal.Su, sReal.Nu, sReal.Ca, sReal.Sa, sReal.Na, sReal.RSa, sReal.ESa, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn, sReal.PC, bcPC.left95, bcPC.right95])
 
 def create_small_scale_result():
     effTps = ['synonymous', 'LGD', 'nonsense', 'splice-site', 'frame-shift', 'missense']
@@ -191,7 +44,7 @@ def create_small_scale_result():
     CNTS_N = {}
 
     SYN = count(persons, lambda e: (not e.location.startswith('chrX')) and e.eff == 'synonymous')
-    for grpName,grpChIds in CGG:
+    for grpName,grpChIds in _CGG:
         for effTp in effTps:
             if effTp == 'LGD':
                 effTpS = set(['nonsense','frame-shift','splice-site'])
@@ -204,7 +57,7 @@ def create_small_scale_result():
 
     SSTF = open(outDir + '/small_scale_result_table.txt', 'w')
     ohcs = ['group','backgroundGroup', 'effect']
-    ohcs += "sReal.U sReal.Nu sReal.Xu sReal.A sReal.Na sReal.Xa sReal.RaR sReal.ENa sReal.delta sReal.AD bcAD.left95 bcAD.right95 esAD.pvOne esAD.z esAD.pvOneAn sReal.IR bcIR.left95 bcIR.right95".split()
+    ohcs += _oneSubjectClassStatsColumns
 
     SSTF.write("\t".join(ohcs)+'\n')
     for grpName,grpNameB in [
@@ -212,16 +65,11 @@ def create_small_scale_result():
                 ("AGRE affected","SSC unaffected"),
                 ("SSC affected", "AGRE affected")]:
         for effTp in effTps:
-            cntsB = CNTS_N[grpNameB,effTp]
             cntsF = CNTS_N[grpName,effTp]
-            sReal, sNullBckg, sBtstrp = compareN(cntsF,cntsB,nullI=1000,bootstrapI=1000)
-            esAD = empStats(sReal, sNullBckg, 'AD')
-            bcAD = empStats(sReal, sBtstrp, 'AD')
-            bcIR = empStats(sReal, sBtstrp, 'IR')
+            cntsB = CNTS_N[grpNameB,effTp]
 
-            cs = [grpName, grpNameB, effTp] 
-    
-            cs += map(str,[sReal.U, sReal.Nu, sReal.Xu, sReal.A, sReal.Na, sReal.Xa, sReal.RaR, sReal.ENa, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn, sReal.IR, bcIR.left95, bcIR.right95])
+            cs = [grpName, grpNameB, effTp] + \
+                 _computeOneSubjectStatsColumns(cntsF,cntsB)
 
             SSTF.write("\t".join(map(str,cs))+'\n')
     SSTF.close()
@@ -259,7 +107,7 @@ def create_CNV_result():
     sectionDef =  zip(['ALL EVENTS','ONE CODING GENE'],[allEffTps,oneGeneEffTps])
 
     CNTS = {}
-    CNVs = [e for e in EVS if e.vtype=="CNV"]
+    CNVs = [e for e in _EVS if e.vtype=="CNV"]
     def countCNVs(chldrnIds,varFilterF):
         PSD = {pId:0 for pId in chldrnIds}
         for e in CNVs:
@@ -269,14 +117,14 @@ def create_CNV_result():
                     PSD[pid] += 1
         return {pid:(c,1) for pid,c in PSD.items()}
         
-    for grpName,grpChIds in CGG:
+    for grpName,grpChIds in _CGG:
         for secName,effTps in sectionDef:
             for effTp,effFF in effTps:
                 for vTp,vtFF in allVTps:
                     CNTS[grpName,secName,effTp,vTp] = countCNVs(grpChIds, lambda e: effFF(e) and vtFF(e))
 
     ohcs = ["section","effect", "variant", "group", "backgroundGroup"]
-    ohcs += "sReal.U sReal.Nu sReal.Xu sReal.A sReal.Na sReal.Xa sReal.RaR sReal.ENa sReal.delta sReal.AD bcAD.left95 bcAD.right95 esAD.pvOne esAD.z esAD.pvOneAn sReal.IR bcIR.left95 bcIR.right95".split()
+    ohcs += _oneSubjectClassStatsColumns
     CRTF.write("\t".join(ohcs) + "\n")
     for secName,effTps in sectionDef:
         for effTp,effFF in effTps:
@@ -288,15 +136,12 @@ def create_CNV_result():
                     cntsF = CNTS[grpName, secName,effTp,vTp]
                     cntsT = CNTS[grpNameB,secName,effTp,vTp]
 
-                    sReal, sNullBckg, sBtstrp = compareN(cntsF,cntsT,nullI=1000,bootstrapI=1000)
-                    esAD = empStats(sReal, sNullBckg, 'AD')
-                    bcAD = empStats(sReal, sBtstrp, 'AD')
-                    bcIR = empStats(sReal, sBtstrp, 'IR')
-                    cs = [secName, effTp, vTp, grpName, grpNameB] 
-                    cs += map(str,[sReal.U, sReal.Nu, sReal.Xu, sReal.A, sReal.Na, sReal.Xa, sReal.RaR, sReal.ENa, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn, sReal.IR, bcIR.left95, bcIR.right95])
+                    cs = [secName, effTp, vTp, grpName, grpNameB] + \
+                         _computeOneSubjectStatsColumns(cntsF,cntsT)
+
                     CRTF.write("\t".join(cs) + "\n")
 
-    for grpName,grpChIds in CGG:
+    for grpName,grpChIds in _CGG:
         CRTF.write("#\t%s: %d\n" % (grpName, len(grpChIds)))
     CRTF.close()
 
@@ -318,7 +163,7 @@ def create_merged_smimplex_vs_multiplex_result():
     CNV = cntHelp(isCodingCNV)
 
     CNTS_SEP_N = {}
-    for grpName,grpChIds in CGG:
+    for grpName,grpChIds in _CGG:
         CNTS_SEP_N[grpName] = (
                     {pid:(CNV[pid], 1.0) for pid in grpChIds},
                     {pid:(LGD[pid],SYN[pid]) for pid in grpChIds}
@@ -337,7 +182,7 @@ def create_merged_smimplex_vs_multiplex_result():
 
         cntsF_CNV,cntsF_LGDs = CNTS_SEP_N[grpF]
         cntsB_CNV,cntsB_LGDs = CNTS_SEP_N[grpB]
-        sReal, sNullBckg, sBtstrp = compareN2(cntsF_CNV, cntsB_CNV, cntsF_LGDs, cntsB_LGDs ,nullI=1000,bootstrapI=1000)
+        sReal, sNullBckg, sBtstrp = compare_joinly_two_subject_variant_classes_in_two_groups_using_the_separate_normalization_variant_classes(cntsF_CNV, cntsB_CNV, cntsF_LGDs, cntsB_LGDs ,nullI=1000,bootstrapI=1000)
         esAD = empStats(sReal, sNullBckg, 'AD')
         bcAD = empStats(sReal, sBtstrp, 'AD')
         cs = [grpF, grpB]
@@ -346,7 +191,7 @@ def create_merged_smimplex_vs_multiplex_result():
     MSMF.close()
 
 def create_intronic_result():
-    CGGD = {k:iis for k,iis in CGG}
+    CGGD = {k:iis for k,iis in _CGG}
     prbs = CGGD["SSC affected"]
     sibs = CGGD["SSC unaffected"]
     mtSets = [
@@ -361,8 +206,8 @@ def create_intronic_result():
 
     IRTF = open(outDir + '/intronic_result_table.txt', 'w')
 
-    hcs = "set eventType intronType setGeneNumber".split(" ")
-    hcs += "sReal.U sReal.Nu sReal.Xu sReal.A sReal.Na sReal.Xa sReal.RaR sReal.ENa sReal.delta sReal.AD bcAD.left95 bcAD.right95 esAD.pvOne esAD.z esAD.pvOneAn sReal.IR bcIR.left95 bcIR.right95".split()
+    hcs = "geneSet eventType regionType geneSetGeneNumber".split(" ")
+    hcs += _oneSubjectClassStatsColumns
     IRTF.write("\t".join(hcs)+"\n")
 
     normVariant = {
@@ -381,45 +226,28 @@ def create_intronic_result():
             for effT in ["inter-coding_intronic","peripheral"]:
                 gnsS = set(GENE['gene'][iis])
 
-                cs = [stK,eT,effT,iis.sum()] 
                 def eventFF(e):
                     return (not e.location.startswith('chrX')) and e.vtype in varTs and e.genomicRegion==effT and (e.gns & gnsS) and e.eff != "splice-site" and len(e.pids) == 1
                 def countHelper(chldrn):
                     cnt = count(chldrn,eventFF)
                     return {pid:(v,normVariant[eT][pid]) for pid,v in cnt.items()}
+
                 prbCs = countHelper(prbs)
                 sibCs = countHelper(sibs)
 
-                sReal, sNullBckg, sBtstrp = compareN(prbCs,sibCs,nullI=1000,bootstrapI=1000)
-                esAD = empStats(sReal, sNullBckg, 'AD')
-                bcAD = empStats(sReal, sBtstrp, 'AD')
-                bcIR = empStats(sReal, sBtstrp, 'IR')
-                cs += map(str,[sReal.U, sReal.Nu, sReal.Xu, sReal.A, sReal.Na, sReal.Xa, sReal.RaR, sReal.ENa, sReal.delta, sReal.AD, bcAD.left95, bcAD.right95, esAD.pvOne, esAD.z, esAD.pvOneAn, sReal.IR, bcIR.left95, bcIR.right95])
+                cs = [stK,eT,effT,iis.sum()] + \
+                    _computeOneSubjectStatsColumns(prbCs,sibCs)
+
                 IRTF.write("\t".join(map(str,cs))+"\n")
     IRTF.close()
 
 if __name__ == "__main__":
-    tb = 'all' if len(sys.argv) < 2 else sys.argv[1]
-    outDir = '.' if len(sys.argv) < 3 else sys.argv[2]
-    seedV = None if len(sys.argv) < 4 else int(sys.argv[3])
+    outDir = '.' if len(sys.argv) < 2 else sys.argv[1]
+    seedV = None if len(sys.argv) < 3 else int(sys.argv[2])
 
     if seedV: seed(seedV)
-        
-    EVS = loadEVS(['De novo CNV in SSC and AGRE', 'Small scale de novo in SSC', 'Small scale de novo in AGRE'])
-
-    if tb == 'all':
-        create_small_scale_result()
-        create_intronic_result()
-        create_CNV_result()
-        create_merged_smimplex_vs_multiplex_result()
-    elif tb == 'small_scale':
-        create_small_scale_result()
-    elif tb == 'CNV':
-        create_CNV_result()
-    elif tb == 'intronic':
-        create_intronic_result()
-    elif tb == 'merged_simplex_multiplex':
-        create_merged_smimplex_vs_multiplex_result()
-    else:
-        print("The argument should be all or small_scale or CNV or intronic or merged_simplex_multiplex or merged_intron")
     
+    create_small_scale_result()
+    create_intronic_result()
+    create_CNV_result()
+    create_merged_smimplex_vs_multiplex_result()

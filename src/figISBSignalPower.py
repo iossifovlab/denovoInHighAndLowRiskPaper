@@ -15,16 +15,16 @@ if seedV: seed(seedV)
 RS = genfromtxt(IFN, delimiter='\t',dtype=None,names=True, case_sensitive=True,encoding=None)
 RSD = {}
 for R in RS:
-    k = (R['set'],R['eventType'],R['intronType'])
+    k = (R['geneSet'],R['eventType'],R['regionType'])
     RSD[k] = R
 
 allR = RSD["all genes",'sub','inter-coding_intronic']
 autR = RSD["autism LGD",'sub','inter-coding_intronic']
 
-nIntronSubsUnaffectedAll = allR['sRealNu'] 
-nIntronSubsUnaffectedCandidateGenes = autR['sRealNu'] 
-nUnaffected = allR['sRealU'] # all reacords have the same number of affected and unaffected children 
-nAffected  = allR['sRealA'] 
+nIntronSubsUnaffectedAll = allR['sRealSu'] 
+nIntronSubsUnaffectedCandidateGenes = autR['sRealSu'] 
+nUnaffected = allR['sRealCu'] # all reacords have the same number of affected and unaffected children 
+nAffected  = allR['sRealCa'] 
 
 # background rates
 BRS = [nIntronSubsUnaffectedAll/float(nUnaffected),

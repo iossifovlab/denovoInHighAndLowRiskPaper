@@ -25,7 +25,7 @@ RS = genfromtxt(IFN, delimiter='\t',dtype=None,names=True, case_sensitive=True,e
 
 RSD = {}
 for R in RS:
-    k = (R['set'],R['eventType'],R['intronType'])
+    k = (R['geneSet'],R['eventType'],R['regionType'])
     RSD[k] = R
 
 hcs1 = ['','','','SSC unaffected', '', 'SSC affected']
@@ -46,30 +46,30 @@ for etp,etpOut in zip(['indel', 'sub'],['IID','ISB']):
         else:
             stT = stK + " targets"
         unwR = RSD[(stK,etp,itp)]
-        affN = unwR['sRealNa']
-        affX = unwR['sRealXa']
-        unaN = unwR['sRealNu']
-        unaX = unwR['sRealXu']
+        affN = unwR['sRealSa']
+        affX = unwR['sRealNa']
+        unaN = unwR['sRealSu']
+        unaX = unwR['sRealNu']
 
         dlt = unwR['sRealdelta']
-        expAffN = unwR['sRealENa']
+        expAffN = unwR['sRealESa']
 
         AD = unwR['sRealAD']
         ADl = unwR['bcADleft95']
         ADr = unwR['bcADright95']
 
-        IR = unwR['sRealIR']
-        IRl = unwR['bcIRleft95']
-        IRr = unwR['bcIRright95']
+        PC = unwR['sRealPC']
+        PCl = unwR['bcPCleft95']
+        PCr = unwR['bcPCright95']
 
-        nGenesS = "{:,}".format(int(unwR['setGeneNumber']))
+        nGenesS = "{:,}".format(int(unwR['geneSetGeneNumber']))
         cs = [stT,nGenesS,etpOut] + \
             ["{:,}".format(int(v)) for v in unaX,unaN,affX,affN] + \
             ["{:,.1f}".format(expAffN), 
              "%.1f" % dlt, \
              pV2Str(float(unwR['esADpvOne'])), \
              "%.2f%% (%.2f-%.2f)" % (AD,ADl,ADr), \
-             "%.1f%% (%.1f-%.1f)" % (IR,IRl,IRr) \
+             "%.1f%% (%.1f-%.1f)" % (PC,PCl,PCr) \
             ]
 
         print "\t".join(map(str,cs))
