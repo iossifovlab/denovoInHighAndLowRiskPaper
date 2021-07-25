@@ -10,7 +10,7 @@ We also provide instructions for executing the scripts for the readers who want 
 
 ## Instructions for running the analysis
 
-### Step 1. Setting up the environment
+#### Setting up the environment
 
 We wrote our python scripts in Python 2.7 using few packages outside of the standard python library. You must install precisely the versions of the external packages indicated in the **environment.yml** file to ensure that the scripts generate output identical to the one stored in the **results** directory. There are numerous ways you can achieve that. Here we will provide detailed instructions using the conda package manager, the one we use to manage our execution environments.
 
@@ -22,14 +22,22 @@ Then you should create and activate a conda environment using the specification 
     $ conda env create
     $ conda activate denovoInHighAndLowRiskPaper
 
-The **denovoInHighAndLowRiskPaper** name of the conda environment is specified in the **environment.yml** file. After you activate the **denovoInHighAndLowRiskPaper** environment, you would be able to run each of the scripts using a command like:
+**NOTE**: The **denovoInHighAndLowRiskPaper** name of the conda environment is specified in the **environment.yml** file. 
+
+#### Execute scripts one by one
+
+After you activate the **denovoInHighAndLowRiskPaper** environment, you would be able to run each of the scripts using a command like:
 
     $ python src/figRatesVsAge.py
 
-### Step 2. Execute all the scripts using **make**
+#### Execute all the scripts using **make**
 
-The **Makefile** contains the instructions on how to execute the scripts needed to generate all the results. The standard took *make*** can read execute the instructions included in the **Makefile** 
+The **Makefile** contains the instructions on how to execute the scripts needed to generate all the results. The standard tool **make** can read execute the instructions included in the **Makefile**. **make** is installed by default on Linux distributions, is very to install on Mac, and, if needed, is available on Windows (i.e., http://gnuwin32.sourceforge.net/packages./make.htm)
 
-    $ mkdir myresults
-    $ cd myresults
+The following simple commands would regenerate all the results in a new directory called **myResults**. 
+
+    $ mkdir myResults
+    $ cd myResults
     $ make -f ../Makefile -j
+
+You can then compare the newly generated files in **myResults** to those stored in the existing **results** directory: if the inputs and the scripts have not changed, the two sets of result files should be identical. 
