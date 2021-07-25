@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 
+import sys
 import matplotlib as mpl
-mpl.use('Agg')
+if len(sys.argv) > 1:
+    mpl.use('Agg')
 
 from pylab import *
 import matplotlib.gridspec as gridspec
 from matplotlib.transforms import Bbox
 from scipy import stats
 import twodnorm
-import sys
 from diData import persons, outlierPersons, CN
 
 colorDefs = {

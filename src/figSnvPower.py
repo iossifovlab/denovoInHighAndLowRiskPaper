@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
+import sys
 import matplotlib as mpl
-mpl.use('Agg')
+if len(sys.argv) > 1:
+    mpl.use('Agg')
 
 from pylab import *
 from diData import persons, CN
 from scipy import stats
 from collections import defaultdict
-import sys
 
 def pltD(aAll,c,f,t,lw=1,onY=False,):
     a = array(aAll)[logical_not(isnan(aAll))] 

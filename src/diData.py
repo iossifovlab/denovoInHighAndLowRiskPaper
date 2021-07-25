@@ -4,7 +4,8 @@ import sys,glob,os
 from pylab import *
 from collections import defaultdict
 
-resDir = "../input"
+resDir = os.path.dirname(os.path.dirname(__file__)) + "/input"
+
 if 'DI_DATA_RES_DIR' in os.environ:
     resDir = os.environ['DI_DATA_RES_DIR']
 

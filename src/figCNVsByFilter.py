@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
+import sys
 import matplotlib as mpl
-mpl.use('Agg')
-
+if len(sys.argv) > 1:
+    mpl.use('Agg')
+    
 from pylab import *
 from diData import resDir, persons, outlierPersons
 from collections import Counter, defaultdict
