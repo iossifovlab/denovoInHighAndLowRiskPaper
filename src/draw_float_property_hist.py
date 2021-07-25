@@ -11,8 +11,8 @@ from diData import loadEVS, GENE, CN, persons
 from pV2Str import pV2Str
 
 outDir = "."
-tableNumber = 1
-startFigureNumber = 1
+tableNumber = 2
+startFigureNumber = 8
 
 if len(sys.argv)>1:
     outDir = sys.argv[1]
