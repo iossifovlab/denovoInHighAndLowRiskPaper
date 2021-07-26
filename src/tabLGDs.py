@@ -3,7 +3,7 @@
 from pylab import *
 from pV2Str import pV2Str
 
-IFN = "small_scale_result_table.txt"
+IFN = "resTab-smallScale.txt"
 if len(sys.argv) > 1:
     IFN = sys.argv[1] 
 
@@ -32,11 +32,11 @@ print "\t".join(hcs2)
 for grp in ['SSC affected', 'AGRE affected']:
     R = RSD[grp,'SSC unaffected','LGD']
     cs = [grp] + \
-         ['{:,}'.format(int(R[a])) for a in ['sReal.Nu', 'sReal.Su', 'sReal.Na', 'sReal.Sa']] + \
-         ["%.1f" % (float(R[a])) for a in ['sReal.ESa','sReal.delta']] + \
-         [pV2Str(float(R['esAD.pvOneAn']))] + \
-         ["%.2f%% (%.2f-%.2f)" % tuple([float(R[a]) for a in ['sReal.AD','bcAD.left95','bcAD.right95']])] + \
-         ["%.1f%% (%.1f-%.1f)" % tuple([float(R[a]) for a in ['sReal.PC','bcPC.left95','bcPC.right95']])]
+         ['{:,}'.format(int(R[a])) for a in ['Nu', 'Su', 'Na', 'Sa']] + \
+         ["%.1f" % (float(R[a])) for a in ['ESa','delta']] + \
+         [pV2Str(float(R['AD.pvOneAn']))] + \
+         ["%.2f%% (%.2f-%.2f)" % tuple([float(R[a]) for a in ['AD','AD.left95','AD.right95']])] + \
+         ["%.1f%% (%.1f-%.1f)" % tuple([float(R[a]) for a in ['PC','PC.left95','PC.right95']])]
     print "\t".join(cs)
 
 

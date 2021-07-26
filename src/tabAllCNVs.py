@@ -3,7 +3,7 @@
 from pylab import *
 from pV2Str import pV2Str
 
-IFN = "CNV_result_table.txt"
+IFN = "resTab-CNVs.txt"
 if len(sys.argv) > 1:
     IFN = sys.argv[1] 
 
@@ -35,14 +35,14 @@ for effT in ['all','coding','intergenic','genic noncoding']:
         R = RSD['ALL EVENTS',effT,'cnvs',grp,'SSC unaffected']
         cs = [effT,grp]
         for s in 'ua':
-            N = int(R['sReal.S' + s])
-            C = int(R['sReal.N' + s])
+            N = int(R['S' + s])
+            C = int(R['N' + s])
             cs += [str(N), '%.3f' % (float(N)/C)]
 
-        cs += ["%.1f" % (float(R[a])) for a in ['sReal.ESa','sReal.delta']] + \
-              [pV2Str(float(R['esAD.pvOneAn']))] + \
-              ["%.2f%% (%.2f-%.2f)" % tuple([float(R[a]) for a in ['sReal.AD','bcAD.left95','bcAD.right95']])] + \
-              ["%.1f%% (%.1f-%.1f)" % tuple([float(R[a]) for a in ['sReal.PC','bcPC.left95','bcPC.right95']])]
+        cs += ["%.1f" % (float(R[a])) for a in ['ESa','delta']] + \
+              [pV2Str(float(R['AD.pvOneAn']))] + \
+              ["%.2f%% (%.2f-%.2f)" % tuple([float(R[a]) for a in ['AD','AD.left95','AD.right95']])] + \
+              ["%.1f%% (%.1f-%.1f)" % tuple([float(R[a]) for a in ['PC','PC.left95','PC.right95']])]
         print "\t".join(cs)
 
 

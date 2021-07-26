@@ -17,7 +17,7 @@ if len(sys.argv) > 1:
     itp = sys.argv[1] 
 
 
-IFN = "intronic_result_table.txt"
+IFN = "resTab-intronicPeripheral.txt"
 if len(sys.argv) > 2:
     IFN = sys.argv[2] 
 
@@ -46,28 +46,28 @@ for etp,etpOut in zip(['indel', 'sub'],['IID','ISB']):
         else:
             stT = stK + " targets"
         unwR = RSD[(stK,etp,itp)]
-        affN = unwR['sRealSa']
-        affX = unwR['sRealNa']
-        unaN = unwR['sRealSu']
-        unaX = unwR['sRealNu']
+        affN = unwR['Sa']
+        affX = unwR['Na']
+        unaN = unwR['Su']
+        unaX = unwR['Nu']
 
-        dlt = unwR['sRealdelta']
-        expAffN = unwR['sRealESa']
+        dlt = unwR['delta']
+        expAffN = unwR['ESa']
 
-        AD = unwR['sRealAD']
-        ADl = unwR['bcADleft95']
-        ADr = unwR['bcADright95']
+        AD = unwR['AD']
+        ADl = unwR['ADleft95']
+        ADr = unwR['ADright95']
 
-        PC = unwR['sRealPC']
-        PCl = unwR['bcPCleft95']
-        PCr = unwR['bcPCright95']
+        PC = unwR['PC']
+        PCl = unwR['PCleft95']
+        PCr = unwR['PCright95']
 
         nGenesS = "{:,}".format(int(unwR['geneSetGeneNumber']))
         cs = [stT,nGenesS,etpOut] + \
             ["{:,}".format(int(v)) for v in unaX,unaN,affX,affN] + \
             ["{:,.1f}".format(expAffN), 
              "%.1f" % dlt, \
-             pV2Str(float(unwR['esADpvOne'])), \
+             pV2Str(float(unwR['ADpvOne'])), \
              "%.2f%% (%.2f-%.2f)" % (AD,ADl,ADr), \
              "%.1f%% (%.1f-%.1f)" % (PC,PCl,PCr) \
             ]

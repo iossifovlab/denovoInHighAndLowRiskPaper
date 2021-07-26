@@ -25,11 +25,9 @@ _CGG = [
     ["AGRE affected", {pd.pId for pd in persons.values() if pd.coll == 'AGRE' and pd.role == 'prb'}]
 ]
 
-_oneSubjectClassStatsColumns = ("sReal.Cu sReal.Su sReal.Nu " + \
-                               "sReal.Ca sReal.Sa sReal.Na " + \
-                               "sReal.RSa sReal.ESa sReal.delta " + \
-                               "sReal.AD bcAD.left95 bcAD.right95 esAD.pvOne esAD.z esAD.pvOneAn " + \
-                               "sReal.PC bcPC.left95 bcPC.right95").split()
+_oneSubjectClassStatsColumns = ("Cu Su Nu Ca Sa Na RSa ESa delta " + \
+                               "AD AD.left95 AD.right95 AD.pvOne AD.z AD.pvOneAn " + \
+                               "PC PC.left95 PC.right95").split()
 
 def _computeOneSubjectStatsColumns(countsInAffected,countsInUnaffected):
     sReal, sNullBckg, sBtstrp = compare_subject_variant_class_in_two_groups_using_normalization_variant_class(countsInAffected,countsInUnaffected,nullI=1000,bootstrapI=1000)
@@ -55,7 +53,7 @@ def create_small_scale_result():
             cnts = count(grpChIds, supFltr)
             CNTS_N[grpName,effTp] = {pid:(c,SYN[pid]) for pid,c in cnts.items()}
 
-    SSTF = open(outDir + '/small_scale_result_table.txt', 'w')
+    SSTF = open(outDir + '/resTab-smallScale.txt', 'w')
     ohcs = ['group','backgroundGroup', 'effect']
     ohcs += _oneSubjectClassStatsColumns
 
@@ -75,7 +73,7 @@ def create_small_scale_result():
     SSTF.close()
 
 def create_CNV_result():
-    CRTF = open(outDir + '/CNV_result_table.txt', 'w')
+    CRTF = open(outDir + '/resTab-CNVs.txt', 'w')
 
     def okCNV(e):
         return e.atts['size'] > 4000 and e.vtype == 'CNV'
@@ -169,7 +167,7 @@ def create_merged_smimplex_vs_multiplex_result():
                     {pid:(LGD[pid],SYN[pid]) for pid in grpChIds}
                 ) 
 
-    MSMF = open(outDir + '/merged_simplex_multiplex_results.txt', 'w')
+    MSMF = open(outDir + '/resTab-LGDsAndCnvs.txt', 'w')
 
     ohcs = ["foreground group", "background group"]
     ohcs += "B EB delta AD AD.left AD.right AD.pval AD.z AD.pvOneAn".split()
@@ -204,7 +202,7 @@ def create_intronic_result():
         'all NDD synonymous',
     ]
 
-    IRTF = open(outDir + '/intronic_result_table.txt', 'w')
+    IRTF = open(outDir + '/resTab-intronicPeripheral.txt', 'w')
 
     hcs = "geneSet eventType regionType geneSetGeneNumber".split(" ")
     hcs += _oneSubjectClassStatsColumns

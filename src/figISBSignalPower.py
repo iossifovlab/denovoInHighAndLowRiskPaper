@@ -10,7 +10,7 @@ from scipy.stats import poisson,binom_test
 
 outFigName = None if len(sys.argv) < 2 else sys.argv[1]
 seedV = None if len(sys.argv) < 3 else int(sys.argv[2])
-IFN = "intronic_result_table.txt" if len(sys.argv) < 4 else int(sys.argv[3])
+IFN = "resTab-intronicPeripheral.txt" if len(sys.argv) < 4 else int(sys.argv[3])
 
 if seedV: seed(seedV)
 
@@ -23,10 +23,10 @@ for R in RS:
 allR = RSD["all genes",'sub','inter-coding_intronic']
 autR = RSD["autism LGD",'sub','inter-coding_intronic']
 
-nIntronSubsUnaffectedAll = allR['sRealSu'] 
-nIntronSubsUnaffectedCandidateGenes = autR['sRealSu'] 
-nUnaffected = allR['sRealCu'] # all reacords have the same number of affected and unaffected children 
-nAffected  = allR['sRealCa'] 
+nIntronSubsUnaffectedAll = allR['Su'] 
+nIntronSubsUnaffectedCandidateGenes = autR['Su'] 
+nUnaffected = allR['Cu'] # all reacords have the same number of affected and unaffected children 
+nAffected  = allR['Ca'] 
 
 # background rates
 BRS = [nIntronSubsUnaffectedAll/float(nUnaffected),

@@ -3,7 +3,7 @@
 from pylab import *
 from pV2Str import pV2Str
 
-IFN = "merged_simplex_multiplex_results.txt"
+IFN = "resTab-LGDsAndCnvs.txt"
 if len(sys.argv) > 1:
     IFN = sys.argv[1] 
 
