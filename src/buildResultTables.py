@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
-from pylab import *
+import sys
+from numpy import ones
+from numpy.random import seed
 from collections import Counter, defaultdict
-from scipy.stats import chi2_contingency
-import scipy.stats as st
 from diData import GENE, persons, CN, loadEVS
-from methods import compare_subject_variant_class_in_two_groups_using_normalization_variant_class, empStats
-from methods import compare_joinly_two_subject_variant_classes_in_two_groups_using_the_separate_normalization_variant_classes
+from methods import compareOneSubjectClass, compareTwoSubjectClasses, empStats
 
 _EVS = loadEVS(['De novo CNV in SSC and AGRE', 'Small scale de novo in SSC', 'Small scale de novo in AGRE'])
 
@@ -30,7 +29,7 @@ _oneSubjectClassStatsColumns = ("Cu Su Nu Ca Sa Na RSa ESa delta " + \
                                "PC PC.left95 PC.right95").split()
 
 def _computeOneSubjectStatsColumns(countsInAffected,countsInUnaffected):
-    sReal, sNullBckg, sBtstrp = compare_subject_variant_class_in_two_groups_using_normalization_variant_class(countsInAffected,countsInUnaffected,nullI=1000,bootstrapI=1000)
+    sReal, sNullBckg, sBtstrp = compareOneSubjectClass(countsInAffected,countsInUnaffected,nullI=1000,bootstrapI=1000)
     esAD = empStats(sReal, sNullBckg, 'AD')
     bcAD = empStats(sReal, sBtstrp, 'AD')
     bcPC = empStats(sReal, sBtstrp, 'PC')  
@@ -180,7 +179,7 @@ def create_merged_smimplex_vs_multiplex_result():
 
         cntsF_CNV,cntsF_LGDs = CNTS_SEP_N[grpF]
         cntsB_CNV,cntsB_LGDs = CNTS_SEP_N[grpB]
-        sReal, sNullBckg, sBtstrp = compare_joinly_two_subject_variant_classes_in_two_groups_using_the_separate_normalization_variant_classes(cntsF_CNV, cntsB_CNV, cntsF_LGDs, cntsB_LGDs ,nullI=1000,bootstrapI=1000)
+        sReal, sNullBckg, sBtstrp = compareTwoSubjectClasses(cntsF_CNV, cntsB_CNV, cntsF_LGDs, cntsB_LGDs ,nullI=1000,bootstrapI=1000)
         esAD = empStats(sReal, sNullBckg, 'AD')
         bcAD = empStats(sReal, sBtstrp, 'AD')
         cs = [grpF, grpB]

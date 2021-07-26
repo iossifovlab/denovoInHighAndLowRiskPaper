@@ -111,7 +111,7 @@ Finally, **Supplementary Figure 8-32** and **Supplementary Table 2** are all gen
 
 **methods.py** script implements the core methods for comparison of variants in two groups of children. 
 
-**twodnorm.py** implements a couple of functions for dealing with 2D normal distribution that we use in t*he 
+**twodnorm.py** implements a couple of functions for dealing with 2D normal distributions that we use in the 
 generation of Figure 1 (figChildrenScatter.py).
 
-**pV2Str.py** contains one function that converts p-values to strings that we use in many of the scripts that generate figures and tables. 
+**pV2Str.py** contains one function that converts p-values to strings that we use in many scripts that generate figures and tables. 

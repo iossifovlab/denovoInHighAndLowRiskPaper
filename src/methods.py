@@ -2,7 +2,23 @@ from numpy import array, sort, nan
 from numpy.random import permutation, randint
 import scipy.stats as st
 
-def compare_subject_variant_class_in_two_groups_using_normalization_variant_class(countsInAffected,countsInUnaffected,nullI=0,bootstrapI=0):
+def compareOneSubjectClass(countsInAffected,countsInUnaffected,nullI=0,bootstrapI=0):
+    '''Compares a subject variant class in two groups of children 
+       using a normalization variant class. The two groups of children
+       are referred to as affected and unaffected. 
+       The countsInAffected and the countsInUnaffected parameters have the form:
+        {
+            "personId1":["number of subject class variants", "number of normalization class variants],
+            "personId2":["number of subject class variants", "number of normalization class variants],
+            ....
+        }
+
+        Returns an instance of the VStats class that contains statistics of comparison of the two groups.
+        See below fo details and the manuscript to details of the fields. If the nullI > 0, the function will
+        also return an array of VStats for nullI random permutation of the affected statuses of the children.
+        Similarly, if the bootstrapI > 0, the function will also return an array of VStats for 
+        bootstrapI permutation iteration.
+    '''
     SV = []
     NV = []
     CV = []
@@ -60,7 +76,13 @@ def compare_subject_variant_class_in_two_groups_using_normalization_variant_clas
     return r 
 
 
-def compare_joinly_two_subject_variant_classes_in_two_groups_using_the_separate_normalization_variant_classes(affectedCounts1,unaffectedCounts1,affectedCounts2,unaffectedCounts2,nullI=0,bootstrapI=0):
+def compareTwoSubjectClasses(affectedCounts1,unaffectedCounts1,affectedCounts2,unaffectedCounts2,nullI=0,bootstrapI=0):
+    '''Compares joinly two subject variant classes (1 and 2) in two groups of 
+       children (affected and unaffected) using 
+       separate normalization variant classes.
+
+       The arguments and the return values are analogous to the function compareOneSubjectClass above.
+    '''
     assert affectedCounts1.keys() == affectedCounts2.keys()
     assert unaffectedCounts1.keys() == unaffectedCounts2.keys()
 
@@ -84,9 +106,9 @@ def compare_joinly_two_subject_variant_classes_in_two_groups_using_the_separate_
     CV = array(CV)
 
     def vStats(S1V,N1V,S2V,N2V,CV):
-        class VStats:
+        class VStats2:
                 pass
-        s = VStats() 
+        s = VStats2() 
 
         s.Ca = (CV==1).sum()
         s.Cu = (CV==0).sum()

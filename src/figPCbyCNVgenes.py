@@ -7,7 +7,7 @@ if len(sys.argv) > 1:
 
 from pylab import *
 from diData import persons, loadEVS
-from methods import compare_subject_variant_class_in_two_groups_using_normalization_variant_class, empStats
+from methods import compareOneSubjectClass, empStats
 
 outFigName = None if len(sys.argv) < 2 else sys.argv[1]
 seedV = None if len(sys.argv) < 3 else int(sys.argv[2])
@@ -35,7 +35,7 @@ xlbls = []
 for gi,gn in enumerate(geneNumbers):
     prbC = countCNVs(prbs,gn)
     sibC = countCNVs(sibs,gn)
-    sReal, sBtstrp = compare_subject_variant_class_in_two_groups_using_normalization_variant_class(prbC,sibC,bootstrapI=1000)
+    sReal, sBtstrp = compareOneSubjectClass(prbC,sibC,bootstrapI=1000)
     bcPC = empStats(sReal, sBtstrp, 'PC')
     plot(gn,sReal.PC,'*r')
     plot([gn,gn],[bcPC.left95,bcPC.right95],'r')
