@@ -32,7 +32,7 @@ After you activate the **denovoInHighAndLowRiskPaper** environment, you would be
 
 #### Execute all the scripts using **make**
 
-The **Makefile** contains the instructions on how to execute the scripts needed to generate all the results. The standard tool **make** can read and execute the instructions included in the **Makefile**. **make** is installed by default on Linux distributions, is very easy to install on Mac, and, if needed, is available on Windows (i.e., http://gnuwin32.sourceforge.net/packages./make.htm)
+The **Makefile** contains the instructions on how to execute the scripts needed to generate all the results. The standard tool **make** can read and execute the instructions included in the **Makefile**. **make** is installed by default on Linux distributions, is very easy to install on Mac, and, if needed, is available on Windows (i.e., http://gnuwin32.sourceforge.net/packages/make.htm)
 
 The following simple commands would regenerate all the results in a new directory called **myResults**. 
 
@@ -94,8 +94,6 @@ The manuscript (and specifically its Results section) provides a clear explanati
 | **Supplementary Figure 7** | figISBSignalPower.py <sup>1,2</sup> |
 
 You can execute each of the figure scripts with or without an argument. If you provide one, the script will use it as the file's name to store the figure. The extension of the file will determine the image format. Allowed extensions include ".pdf", ".png", and ".jpeg". If you provide no argument, the script will create a 'live' figure that you can interact with (i.e., you can resize, zoom in or out, save the figure, etc.).
-
-**NOTES:** 
 
 <sup>1</sup> The script uses a random number generator and will generate slightly different results in every execution. If stable results are required, you may pass a number used to initialize the random number generator as a second argument to the script. 
 
