@@ -19,22 +19,22 @@ results.flag:
 	python $D/result_tables.py . 1 && echo done > $@
 
 Table-1-small_scale.txt: results.flag 
-	python $D/mainTable-smallScale.py > $@ 
+	python $D/tabSmallScale.py > $@ 
 
 Table-2-allCNVs.txt: results.flag 
-	python $D/mainTable-allCNVs.py > $@ 
+	python $D/tabAllCNVs.py > $@ 
 
 Table-3-simplex-vs-multiplex.txt: results.flag 
-	python $D/mainTable-simplex-multiplex-combined.py > $@ 
+	python $D/tabSmallScaleAndCNVs > $@ 
 
 Table-4-oneGeneCNVs.txt: results.flag 
-	python $D/mainTable-oneGeneCNVs.py > $@
+	python $D/tabOneGeneCNVs.py > $@
 
 Table-5-smallscale-inter-coding_intronic.txt: results.flag
-	python $D/mainTable-intronic-peripheral.py inter-coding_intronic > $@
+	python $D/tabIntronicPeripheral.py inter-coding_intronic > $@
 
 SuppTable-1-smallscale-peripheral.txt: results.flag
-	python $D/mainTable-intronic-peripheral.py peripheral > $@
+	python $D/tabIntronicPeripheral peripheral > $@
 
 SuppFigure-1-CNVsByFilter.png: 
 	python $D/figCNVsByFilter.py $@
@@ -58,5 +58,5 @@ SuppFigure-7-ISB-power.png: results.flag
 	python $D/figISBSignalPower.py $@ 1
 
 SuppTable-2-propertyTable.txt:
-	python $D/draw_float_property_hist.py . 2 8
+	python $D/drawFloatPropertyHist.py . 2 8
 
