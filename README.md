@@ -48,7 +48,7 @@ You can then compare the newly generated files in **myResults** to those stored 
 
 We generate **Tables 1-5** and **Supplementary Table 1** in two steps. The first step is the heavy one, and we implemented it in the **result_tables.py** script. It computes all the necessary results and stores them in four intermediate files. We implemented the second step using five additional python scripts that generate the six tables included in the manuscript with their precise content and layout. 
 
-| Manuscript table      | intermediate file                   | Second step script                             |
+| Manuscript table      | Intermediate file                   | Second step script                             |
 |-----------------------|-------------------------------------|------------------------------------------------|
 | Table 1               | small_scale_result_table.txt        | tabSmallScale.py                               |
 | Table 2               | CNV_result_table.txt                | tabAllCNVs.py                                  |
@@ -56,6 +56,25 @@ We generate **Tables 1-5** and **Supplementary Table 1** in two steps. The first
 | Table 4               | CNV_result_table.txt                | tabOneGeneCNVs.py                              |
 | Table 5               | intronic_result_table.txt           | tabIntronicPeripheral.py inter-coding_intronic |
 | Supplementary Table 1 | intronic_result_table.txt           | tabIntronicPeripheral.py peripheral            |
+
+sReal.Cu
+sReal.Su
+sReal.Nu
+sReal.Ca
+sReal.Sa
+sReal.Na
+sReal.RSa
+sReal.ESa
+sReal.delta
+sReal.AD
+bcAD.left95
+bcAD.right95
+esAD.pvOne
+esAD.z
+esAD.pvOneAn
+sReal.PC
+bcPC.left95
+bcPC.right95
 
 
 #### Figure scripts
