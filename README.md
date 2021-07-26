@@ -2,6 +2,11 @@
 
 The repository contains the scripts used in preparing the **Rates of contributory de novo mutation in high and low-risk autism families** by Seungtai Yoon, Adriana Munoz, et al. manuscript, soon to be published in _Nature Communications Biology_.
 
+You can access the release (v1.0) accompanying the paper through: 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5137986.svg)](https://doi.org/10.5281/zenodo.5137986)
+
+The lastest updates are available at https://github.com/iossifovlab/denovoInHighAndLowRiskPaper.
+
 ## Description of the contents
 
 The **input** directory contains copies of the Supplementary Data associated with the manuscript. A detailed description of these data files can be obtained from _Nature Communications Biology_'s copy of the manuscript. The **src** directory python scripts use these data files and perform all the analyses presented in the manuscript. As a result, the scripts generate the tables and figures shown in the manuscript and the associated supporting information. As a convenience, the repository also stores the **results** of the execution of the scripts. Thus, readers can examine the scripts together with their inputs and outputs without setting up an execution environment for themselves. 
