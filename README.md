@@ -16,7 +16,7 @@ We wrote our python scripts in Python 2.7 using few packages outside of the stan
 
 First, you have to install conda following the instructions in [Conda Installation](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
-Then you should create and activate a conda environment using the specification in the **environment.yml" file. You can do that with the following commands executed from the directory containing the clone of this repository:
+Then you should create and activate a conda environment using the specification in the **environment.yml** file. You can do that with the following commands executed from the directory containing the clone of this repository:
 
     $ cd .../denovoInHighAndLowRiskPaper
     $ conda env create
@@ -50,7 +50,7 @@ You can then compare the newly generated files in **myResults** to those stored 
 
 ### Table scripts
 
-We generate **Tables 1-5** and **Supplementary Table 1** in two steps. The first step is the heavy one, and we implemented it in the **buildResultTables.py** script. It computes all the necessary results and stores them in four intermediate files. The computation uses a random number generator and will produce slightly different results every time you execute **buildResultTables.py". The script accepts as a second argument a number used to initialize the random number generator. You can use this second argument to produce stable results, if necessary. 
+We generate **Tables 1-5** and **Supplementary Table 1** in two steps. The first step is the heavy one, and we implemented it in the **buildResultTables.py** script. It computes all the necessary results and stores them in four intermediate files. The computation uses a random number generator and will produce slightly different results every time you execute **buildResultTables.py**. The script accepts as a second argument a number used to initialize the random number generator. You can use this second argument to produce stable results, if necessary. 
 
 We implemented the second step using five additional python scripts that generate the six tables included in the manuscript with their precise content and layout. The table below shows the components we use to build each of the manuscript tables.
 
@@ -63,11 +63,11 @@ We implemented the second step using five additional python scripts that generat
 | **Table 5**               | resTab-intronicPeripheral.txt | tabIntronicPeripheral.py inter-coding_intronic |
 | **Supplementary Table 1** | resTab-intronicPeripheral.txt | tabIntronicPeripheral.py peripheral            |
 
-All but the resTab-LGDsAndCnvs.txt have very similar formats. Each row shows the results of comparing the two groups of children (referred to as affected and unaffected children) for a *subject* variant class using a *normalization* variant class. The first columns in each intermediate file define the two groups of children and the variant types used. The following columns show the results of the comparison:
+All but the **resTab-LGDsAndCnvs.txt** have very similar formats. Each row shows the results of comparing the two groups of children (referred to as affected and unaffected children) for a *subject* variant class using a *normalization* variant class. The first columns in each intermediate file define the two groups of children and the variant types used. The following columns show the results of the comparison:
 
-  * Cu, Su, Nu, Ca, Sa, and Na show the number of children (Cx) in the affected (a) and unaffected (u) groups, the number of subject class variants (Sx) in the two groups, and the number of normalization class variants (Nx) in the two groups; 
+  * Cu, Su, Nu, Ca, Sa, and Na show the number of children (Cx) in the affected (a) and unaffected (u) groups, the number of subject class variants (Sx), and the number of normalization class variants (Nx) in the two groups; 
 
-  * RSa	shows the rate of the subject class variant per affected child; 
+  * RSa	shows the rate of the subject variant class per affected child; 
   
   * ESa	shows the expected number of subjects class variants in the affect children if the subject class was unrelated to the diagnosis;
   
@@ -77,7 +77,7 @@ All but the resTab-LGDsAndCnvs.txt have very similar formats. Each row shows the
 
   * PC, PC.left95, and PC.right95 show the *percent contributory* measure and its 95% confidence interval.
 
-The resTab-LGDsAndCnvs.txt file has a simple format compared to the rest of the intermediate tables. 
+The **resTab-LGDsAndCnvs.txt** file has a simple format compared to the rest of the intermediate tables. 
 It shows the pair-wise comparison of the three groups of children analyzed in the manuscript for the combined number of LGDs and CNVs. We normalized LGDs using synonymous variants and CNVs using the number of children. The result columns are B, EB, delta, AD, AD.left, AD.right, AD.pval, AD.z, AD.pvOneAn. The B shows the sum of LGDs and CNVs in the affected/background group, EB shows the expected number of B if neither LGDs nor CNVs contributed to the disorder, and the delta (=B-EB) is the excess of LGDs and CNVs compared to the expected. The AD* columns are as described previously.
 
 The manuscript (and specifically its Results section) provides a clear explanation of the comparisons we have performed and our report's statics. 
@@ -114,6 +114,6 @@ Finally, **Supplementary Figure 8-32** and **Supplementary Table 2** are all gen
 **methods.py** script implements the core methods for comparison of variants in two groups of children. 
 
 **twodnorm.py** implements a couple of functions for dealing with 2D normal distributions that we use in the 
-generation of Figure 1 (figChildrenScatter.py).
+generation of Figure 1 (**figChildrenScatter.py**).
 
 **pV2Str.py** contains one function that converts p-values to strings that we use in many scripts that generate figures and tables. 
