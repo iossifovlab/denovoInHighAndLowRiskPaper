@@ -30,7 +30,7 @@ After you activate the **denovoInHighAndLowRiskPaper** environment, you would be
 
     $ python src/figRatesVsAge.py
 
-or if you are on Linux or Mac, with a command like:
+or, if you are on Linux or Mac, with a command like:
 
     $ ./src/figRatesVsAge.py
 
