@@ -48,14 +48,14 @@ You can then compare the newly generated files in **myResults** to those stored 
 
 We generate **Tables 1-5** and **Supplementary Table 1** in two steps. The first step is the heavy one, and we implemented it in the **result_tables.py** script. It computes all the necessary results and stores them in four intermediate files. We implemented the second step using five additional python scripts that generate the six tables included in the manuscript with their precise content and layout. 
 
-| Manuscript table      | intermediate file                   | Second step script                                     |
-|-----------------------|-------------------------------------|--------------------------------------------------------|
-| Table 1               | small_scale_result_table.txt        | mainTable-smallScale.py                                |
-| Table 2               | CNV_result_table.txt                | mainTable-allCNVs.py                                   |
-| Table 3               | mered_simplex_multiplex_results.txt | mainTable-simplex-multiplex-combined.py                |
-| Table 4               | CNV_result_table.txt                | mainTable-oneGeneCNVs.py                               |
-| Table 5               | intronic_result_table.txt           | mainTable-intronic-peripheral.py inter-coding_intronic |
-| Supplementary Table 1 | intronic_result_table.txt           | mainTable-intronic-peripheral.py peripheral            |
+| Manuscript table      | intermediate file                   | Second step script                             |
+|-----------------------|-------------------------------------|------------------------------------------------|
+| Table 1               | small_scale_result_table.txt        | tabSmallScale.py                               |
+| Table 2               | CNV_result_table.txt                | tabAllCNVs.py                                  |
+| Table 3               | mered_simplex_multiplex_results.txt | tabSmallScaleAndCNVs.py                        |
+| Table 4               | CNV_result_table.txt                | tabOneGeneCNVs.py                              |
+| Table 5               | intronic_result_table.txt           | tabIntronicPeripheral.py inter-coding_intronic |
+| Supplementary Table 1 | intronic_result_table.txt           | tabIntronicPeripheral.py peripheral            |
 
 
 #### Figure scripts
